@@ -1,8 +1,13 @@
+:root {
+  --block-accent: var(--accent);
+}
+
 body {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 2rem 1rem;
+  border-top: 6px solid var(--block-accent);
 }
 
 /* Hidden until settings are read: avoids a flash before a custom-page redirect. */
@@ -19,13 +24,44 @@ main {
   gap: 0.6rem;
 }
 
+#image {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+#image.custom {
+  width: auto;
+  height: auto;
+  max-width: min(18rem, 80vw);
+  max-height: 14rem;
+  border-radius: 12px;
+}
+
+h1 {
+  overflow-wrap: anywhere;
+}
+
 .message {
   margin: 0.25rem 0;
   font-size: 1.05rem;
   white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 
 .slogan {
   margin: 0 0 0.6rem;
   font-style: italic;
+}
+
+.locked {
+  margin: 0 0 0.6rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.button.primary {
+  background: var(--block-accent);
+  border-color: var(--block-accent);
+  color: #fff;
 }

@@ -16,5 +16,5 @@ Include the ArYS version, your Edge version and the steps to reproduce. You can 
 Things we especially care about:
 
 - any way for a web page or another extension to read, change or remove a user's blocklist;
-- any path that bypasses the add-only design (removing or disabling rules);
+- any way to remove entries, disable rules, or cancel or shorten a Nuclear lock while it is active;
 - anything that makes ArYS send data over the network.

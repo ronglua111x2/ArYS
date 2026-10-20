@@ -19,7 +19,7 @@ export default {
   'common.back': 'Back',
 
   'blocked.title': 'Blocked sites',
-  'blocked.subtitle': 'Add-only: entries can never be edited or removed.',
+  'blocked.subtitle': 'Sites, pages and keywords you block.',
   'blocked.add': '+ Add',
   'blocked.import': 'Import',
   'blocked.export': 'Export',
@@ -27,6 +27,8 @@ export default {
   'blocked.count': '{n} entries',
   'blocked.empty': 'Nothing blocked yet. Click “+ Add” to start.',
   'blocked.noMatch': 'No matches.',
+  'blocked.remove': 'Remove',
+  'blocked.removeLocked': 'Locked by Nuclear',
 
   'filter.all': 'All',
   'filter.site': 'Sites',
@@ -63,7 +65,7 @@ export default {
   'add.tooMany': '{n} lines – at most {max} at a time.',
   'add.badgeSkipped': 'skipped',
   'add.badgeRejected': 'rejected',
-  'add.confirm': 'Permanent – I can’t remove these later',
+  'add.lockedNote': 'Nuclear is on: entries you add now can’t be removed until it ends.',
   'add.submit': 'Add {n}',
   'add.submitEmpty': 'Add',
 
@@ -72,10 +74,12 @@ export default {
     'Unsupported file. Use an ArYS export (.json) or a text file with one entry per line.',
 
   'toast.added': 'Added {n}.',
+  'toast.removed': 'Removed {n}.',
   'toast.reblocked': 'Blocked {n} open tab(s).',
   'toast.exported': 'Exported {n} entries.',
   'toast.exportEmpty': 'Nothing to export yet.',
   'toast.saved': 'Saved',
+  'toast.failed': 'Could not save. Try again.',
 
   'settings.title': 'Settings',
   'settings.language': 'Language',
@@ -86,13 +90,41 @@ export default {
   'settings.blockPageUrl': 'Go to my own page',
   'settings.blockPageUrlPlaceholder': 'https://example.com/focus',
   'settings.blockPageUrlInvalid': 'Enter a full http(s) address.',
-  'settings.message': 'Message on the block page',
+  'settings.blockTitle': 'Title',
+  'settings.blockTitlePlaceholder': 'This site is blocked',
+  'settings.message': 'Message',
   'settings.messagePlaceholder': 'Leave empty for the default message',
   'settings.messageCounter': '{n}/{max}',
+  'settings.accent': 'Accent colour',
+  'settings.image': 'Image',
+  'settings.imageChoose': 'Choose image…',
+  'settings.imageRemove': 'Remove image',
+  'settings.imageTooBig': 'That image is too large even after resizing.',
+  'settings.preview': 'Preview',
+  'settings.resetBlockPage': 'Reset to default',
   'settings.nuclear': 'Nuclear option',
-  'settings.nuclearDesc':
-    'Block your list – or everything – for a set time, with no way to cancel it. Coming in a future version.',
-  'settings.nuclearSoon': 'Coming soon',
+  'settings.nuclearDesc': 'Locks removing entries for the time you choose. It cannot be cancelled.',
+
+  'nuclear.duration': 'Duration',
+  'nuclear.minutes': 'minutes',
+  'nuclear.hours': 'hours',
+  'nuclear.days': 'days',
+  'nuclear.start': 'Start',
+  'nuclear.startNow': 'Now',
+  'nuclear.startAt': 'At',
+  'nuclear.startButton': 'Start Nuclear',
+  'nuclear.errorAmount': 'Enter a duration greater than 0.',
+  'nuclear.errorStart': 'Pick a start time that is not in the past.',
+  'nuclear.confirmTitle': 'Start Nuclear?',
+  'nuclear.confirmFrom': 'From {time}',
+  'nuclear.confirmUntil': 'Until {time}',
+  'nuclear.forever': '∞',
+  'nuclear.confirm': 'Start',
+  'nuclear.statusScheduled': 'Starts in {time}',
+  'nuclear.statusActive': 'Unlocks in {time}',
+  'nuclear.statusUntil': 'until {date}',
+  'nuclear.chipScheduled': 'Nuclear in {time}',
+  'nuclear.chipActive': 'Nuclear · {time}',
 
   'about.title': 'About',
   'about.description':
@@ -108,7 +140,7 @@ export default {
   'welcome.lead': 'A calm, lightweight blocker for the sites that steal your focus.',
   'welcome.point1': 'Add sites, pages or keywords – they are blocked right away.',
   'welcome.point2':
-    'Add-only: once added, an entry cannot be edited or removed. Uninstalling is the only reset.',
+    'Change your list any time – or start Nuclear to lock removing entries for as long as you choose.',
   'welcome.point3':
     'No tracking, no accounts, no network requests. Your list stays in your browser.',
   'welcome.termsIntro': 'Before you start, please read:',
@@ -119,7 +151,7 @@ export default {
   'legal.terms.p1':
     'ArYS is free, open-source software provided “as is”, without warranty of any kind, under the MIT License.',
   'legal.terms.p2':
-    'ArYS is add-only by design: entries you add cannot be edited or removed from inside the extension. The only way to reset the list is to uninstall ArYS. Check each entry before adding it.',
+    'You can add and remove entries at any time, except while a Nuclear lock you started is active: then entries cannot be removed until it ends, and the lock cannot be cancelled. Uninstalling ArYS removes the list and the lock. Choose a Nuclear duration with care.',
   'legal.terms.p3':
     'You decide what is blocked and are responsible for the entries you add and for following the rules that apply to the devices you use.',
   'legal.terms.p4':
@@ -130,7 +162,7 @@ export default {
   'legal.privacy.p1':
     'ArYS collects nothing. It makes no network requests and has no accounts, analytics or advertising.',
   'legal.privacy.p2':
-    'Your list and settings are kept in your browser’s extension storage on this device. If browser sync is on, the list is also kept in the browser’s sync storage so it can be restored; that is handled by your browser, not by ArYS.',
+    'Your list and settings are kept in your browser’s extension storage on this device. If browser sync is on, the list and the Nuclear lock are also kept in the browser’s sync storage so it can be restored; that is handled by your browser, not by ArYS.',
   'legal.privacy.p3':
     'To block pages, the browser matches addresses against your rules. ArYS also checks in-page navigations and browser pages in memory to block them. Addresses are never stored or sent.',
   'legal.privacy.p4': 'Uninstalling ArYS removes its data from this device.',
@@ -140,4 +172,5 @@ export default {
   'blockedPage.default':
     'You chose to stay away from this site. Take a breath and get back to what matters.',
   'blockedPage.open': 'Open ArYS',
+  'blockedPage.locked': 'Nuclear is on – unlocks in {time}.',
 };

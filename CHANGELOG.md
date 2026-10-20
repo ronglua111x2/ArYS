@@ -10,11 +10,12 @@ First public version.
 
 ### Added
 
-- Add-only blocklist: sites, URL prefixes, `*keyword` patterns and browser pages (`edge://…`).
-- Self-healing list kept in three places (blocking rules, local storage, sync storage); only uninstalling resets it.
+- Blocklist: sites, URL prefixes, `*keyword` patterns and browser pages (`edge://…`); entries can be removed unless Nuclear is on.
+- Nuclear option: a lock on removing entries, now or scheduled, for any duration; it cannot be cancelled or shortened.
+- Self-healing list kept in three places (blocking rules, local storage, sync storage).
 - Blocking of in-page (single-page app) address changes and of browser pages.
 - Options page with sidebar: Blocked sites, Settings, About.
 - Import and export of the list.
-- Custom block page (own message or own address).
+- Custom block page: title, message, accent colour and image, or your own address.
 - Welcome page with terms of use and privacy policy on first install.
 - English and Vietnamese; light, dark and system themes.

@@ -4,7 +4,7 @@ Thanks for helping! ArYS is small on purpose. Please keep these principles in mi
 
 ## Principles (non-negotiable)
 
-1. **Add-only.** No feature may edit, remove or disable an entry, and there are no allow rules. The only reset is uninstalling.
+1. **Nuclear means locked.** While a Nuclear lock is active, nothing may remove an entry, disable a rule or weaken the lock. Rules are changed only in `extension/lib/user-rules.js`, which checks the lock, and there are no allow rules.
 2. **Lightweight.** No timers, no polling, no keep-alive. The service worker only runs for browser events.
 3. **No tracking.** No network requests, no remote code, no analytics. Store only the minimum settings.
 4. **Minimal permissions.** New permissions need a strong reason, and an update that adds one makes Edge disable the extension until users approve it.

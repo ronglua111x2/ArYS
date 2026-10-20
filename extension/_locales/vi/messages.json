@@ -4,7 +4,7 @@
     "description": "Extension name. Must stay ArYS in every language."
   },
   "extDescription": {
-    "message": "Chặn các trang gây xao nhãng bằng danh sách chỉ thêm được. Nhẹ, không theo dõi, không tài khoản.",
+    "message": "Chặn các trang gây xao nhãng, kèm khóa Nuclear không thể hủy. Nhẹ, không theo dõi, không tài khoản.",
     "description": "Short description shown in the store and on edge://extensions (max 132 characters)."
   }
 }

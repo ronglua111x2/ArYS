@@ -18,7 +18,7 @@ export default {
   'common.back': 'Quay lại',
 
   'blocked.title': 'Trang bị chặn',
-  'blocked.subtitle': 'Chỉ thêm được: mục đã thêm không thể sửa hay xóa.',
+  'blocked.subtitle': 'Trang web, đường dẫn và từ khóa bạn chặn.',
   'blocked.add': '+ Thêm',
   'blocked.import': 'Nhập',
   'blocked.export': 'Xuất',
@@ -26,6 +26,8 @@ export default {
   'blocked.count': '{n} mục',
   'blocked.empty': 'Chưa chặn gì. Bấm “+ Thêm” để bắt đầu.',
   'blocked.noMatch': 'Không có kết quả.',
+  'blocked.remove': 'Xóa',
+  'blocked.removeLocked': 'Đang khóa bởi Nuclear',
 
   'filter.all': 'Tất cả',
   'filter.site': 'Trang web',
@@ -62,7 +64,7 @@ export default {
   'add.tooMany': '{n} dòng – tối đa {max} mỗi lần.',
   'add.badgeSkipped': 'bỏ qua',
   'add.badgeRejected': 'từ chối',
-  'add.confirm': 'Vĩnh viễn – tôi không thể gỡ các mục này sau đó',
+  'add.lockedNote': 'Nuclear đang bật: mục thêm lúc này không xóa được cho tới khi hết hạn.',
   'add.submit': 'Thêm {n}',
   'add.submitEmpty': 'Thêm',
 
@@ -71,10 +73,12 @@ export default {
     'Tệp không được hỗ trợ. Dùng tệp xuất từ ArYS (.json) hoặc tệp văn bản mỗi dòng một mục.',
 
   'toast.added': 'Đã thêm {n}.',
+  'toast.removed': 'Đã xóa {n}.',
   'toast.reblocked': 'Đã chặn {n} tab đang mở.',
   'toast.exported': 'Đã xuất {n} mục.',
   'toast.exportEmpty': 'Chưa có gì để xuất.',
   'toast.saved': 'Đã lưu',
+  'toast.failed': 'Không lưu được. Thử lại.',
 
   'settings.title': 'Cài đặt',
   'settings.language': 'Ngôn ngữ',
@@ -85,13 +89,41 @@ export default {
   'settings.blockPageUrl': 'Chuyển tới trang của tôi',
   'settings.blockPageUrlPlaceholder': 'https://example.com/tap-trung',
   'settings.blockPageUrlInvalid': 'Nhập địa chỉ http(s) đầy đủ.',
-  'settings.message': 'Lời nhắn trên trang chặn',
+  'settings.blockTitle': 'Tiêu đề',
+  'settings.blockTitlePlaceholder': 'Trang này đã bị chặn',
+  'settings.message': 'Lời nhắn',
   'settings.messagePlaceholder': 'Để trống để dùng lời nhắn mặc định',
   'settings.messageCounter': '{n}/{max}',
+  'settings.accent': 'Màu nhấn',
+  'settings.image': 'Hình ảnh',
+  'settings.imageChoose': 'Chọn ảnh…',
+  'settings.imageRemove': 'Bỏ ảnh',
+  'settings.imageTooBig': 'Ảnh quá lớn kể cả sau khi thu nhỏ.',
+  'settings.preview': 'Xem trước',
+  'settings.resetBlockPage': 'Đặt lại mặc định',
   'settings.nuclear': 'Chế độ Nuclear',
-  'settings.nuclearDesc':
-    'Chặn danh sách của bạn – hoặc mọi trang – trong một khoảng thời gian, không thể hủy. Sẽ có ở phiên bản sau.',
-  'settings.nuclearSoon': 'Sắp có',
+  'settings.nuclearDesc': 'Khóa việc xóa mục trong khoảng thời gian bạn chọn. Không thể hủy.',
+
+  'nuclear.duration': 'Thời lượng',
+  'nuclear.minutes': 'phút',
+  'nuclear.hours': 'giờ',
+  'nuclear.days': 'ngày',
+  'nuclear.start': 'Bắt đầu',
+  'nuclear.startNow': 'Ngay',
+  'nuclear.startAt': 'Lúc',
+  'nuclear.startButton': 'Bật Nuclear',
+  'nuclear.errorAmount': 'Nhập thời lượng lớn hơn 0.',
+  'nuclear.errorStart': 'Chọn thời điểm bắt đầu không nằm trong quá khứ.',
+  'nuclear.confirmTitle': 'Bật Nuclear?',
+  'nuclear.confirmFrom': 'Từ {time}',
+  'nuclear.confirmUntil': 'Đến {time}',
+  'nuclear.forever': '∞',
+  'nuclear.confirm': 'Bật',
+  'nuclear.statusScheduled': 'Bắt đầu sau {time}',
+  'nuclear.statusActive': 'Mở khóa sau {time}',
+  'nuclear.statusUntil': 'đến {date}',
+  'nuclear.chipScheduled': 'Nuclear sau {time}',
+  'nuclear.chipActive': 'Nuclear · {time}',
 
   'about.title': 'Giới thiệu',
   'about.description':
@@ -107,7 +139,7 @@ export default {
   'welcome.lead': 'Trình chặn nhẹ nhàng cho những trang lấy mất sự tập trung của bạn.',
   'welcome.point1': 'Thêm trang web, đường dẫn hoặc từ khóa – chúng bị chặn ngay.',
   'welcome.point2':
-    'Chỉ thêm được: đã thêm thì không sửa hay xóa được. Gỡ cài đặt là cách duy nhất để làm lại từ đầu.',
+    'Sửa danh sách bất cứ lúc nào – hoặc bật Nuclear để khóa việc xóa mục trong khoảng thời gian bạn chọn.',
   'welcome.point3':
     'Không theo dõi, không tài khoản, không kết nối mạng. Danh sách nằm trong trình duyệt của bạn.',
   'welcome.termsIntro': 'Trước khi bắt đầu, vui lòng đọc:',
@@ -118,7 +150,7 @@ export default {
   'legal.terms.p1':
     'ArYS là phần mềm miễn phí, mã nguồn mở, được cung cấp “nguyên trạng”, không kèm bất kỳ bảo đảm nào, theo Giấy phép MIT.',
   'legal.terms.p2':
-    'ArYS chỉ cho thêm: mục bạn đã thêm không thể sửa hay xóa từ bên trong extension. Cách duy nhất để làm lại danh sách là gỡ cài đặt ArYS. Hãy kiểm tra từng mục trước khi thêm.',
+    'Bạn có thể thêm và xóa mục bất cứ lúc nào, trừ khi đang có khóa Nuclear do bạn bật: khi đó không xóa được mục cho tới khi hết hạn, và không thể hủy khóa. Gỡ cài đặt ArYS sẽ xóa danh sách và khóa. Hãy chọn thời lượng Nuclear cẩn thận.',
   'legal.terms.p3':
     'Bạn quyết định chặn gì, và chịu trách nhiệm về các mục mình thêm cũng như việc tuân thủ quy định áp dụng cho thiết bị bạn dùng.',
   'legal.terms.p4':
@@ -129,7 +161,7 @@ export default {
   'legal.privacy.p1':
     'ArYS không thu thập gì. Không kết nối mạng, không tài khoản, không phân tích hay quảng cáo.',
   'legal.privacy.p2':
-    'Danh sách và cài đặt được lưu trong bộ nhớ extension của trình duyệt trên thiết bị này. Nếu bật đồng bộ trình duyệt, danh sách cũng được lưu trong bộ nhớ đồng bộ để có thể khôi phục; phần đó do trình duyệt xử lý, không phải ArYS.',
+    'Danh sách và cài đặt được lưu trong bộ nhớ extension của trình duyệt trên thiết bị này. Nếu bật đồng bộ trình duyệt, danh sách và khóa Nuclear cũng được lưu trong bộ nhớ đồng bộ để có thể khôi phục; phần đó do trình duyệt xử lý, không phải ArYS.',
   'legal.privacy.p3':
     'Để chặn trang, trình duyệt so địa chỉ với các quy tắc của bạn. ArYS cũng kiểm tra trong bộ nhớ các lần đổi địa chỉ trong trang và trang trình duyệt để chặn chúng. Địa chỉ không bao giờ được lưu hay gửi đi.',
   'legal.privacy.p4': 'Gỡ cài đặt ArYS sẽ xóa dữ liệu của nó khỏi thiết bị này.',
@@ -139,4 +171,5 @@ export default {
   'blockedPage.default':
     'Bạn đã chọn tránh xa trang này. Hít một hơi thật sâu rồi quay lại với điều quan trọng.',
   'blockedPage.open': 'Mở ArYS',
+  'blockedPage.locked': 'Nuclear đang bật – mở khóa sau {time}.',
 };

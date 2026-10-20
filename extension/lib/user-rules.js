@@ -1,17 +1,19 @@
-// Custom (user-added) rules: add-only, self-healing, update-safe (ADR-007, ADR-012, ADR-013).
-// This is the ONLY file allowed to call updateDynamicRules, and it only ever adds -
-// scripts/check-extension.mjs fails the build on any removal API.
+// The user's blocklist: self-healing and update-safe. This is the ONLY file allowed to change
+// dynamic rules (scripts/check-extension.mjs enforces it). Entries can be removed only through
+// removeUserEntries(), and never while a Nuclear lock is active (lib/nuclear.js).
 //
 // Every custom entry lives in three places:
 //   1. the browser's dynamic DNR rules      (what is enforced for web pages)
 //   2. chrome.storage.local  userEntries    (original text, for the list)
 //   3. chrome.storage.sync   arys:meta/e<n> (survives local tampering; cloud copy if Edge Sync is on)
 // reconcile() merges all three and writes the union back, so deleting or editing one copy in the
-// Edge profile is undone at the next session start. Only uninstalling resets the list: a fresh
-// install (onInstalled reason "install") gets a new installId and discards the old synced copy.
+// Edge profile is undone at the next session start. A removal made in the UI updates all three
+// copies, so it is not undone. Uninstalling resets the list: a fresh install (onInstalled reason
+// "install") gets a new installId and discards the old synced copy.
 //
 // Update safety (ADR-013) - an extension update must never damage the user's list:
-//   - writes never shrink the stored list (checked right before every write; violation = no write);
+//   - writes never shrink the stored list except for entries the user explicitly removed
+//     (checked right before every write; violation = no write);
 //   - the last MAX_BACKUPS distinct lists are kept in storage.local and used as a merge source;
 //   - stored values that are not a list of strings are salvaged and the original kept aside;
 //   - storage changes go through migrateLocal(), which only adds keys and never deletes;
@@ -25,6 +27,8 @@ import {
   makeRule,
   REGEX_PREFIX,
 } from './rules.js';
+import { loadSettings } from './settings.js';
+import { isLocked } from './nuclear.js';
 
 export const SCHEMA_VERSION = 1;
 const LOCAL_ENTRIES = 'userEntries';
@@ -190,17 +194,31 @@ async function readSync() {
 }
 
 /**
- * The single write path. Refuses to write anything that would drop a previously stored entry.
+ * The single write path. Refuses to write anything that would drop a previously stored entry,
+ * unless that entry is in `removed` (an explicit removal by the user). With removals, the sync
+ * copy is written first and must succeed, so a stale synced copy can never bring them back.
  */
-async function commit({ installId, entries, previous, backups, syncChunks, extra = {} }) {
+async function commit({
+  installId,
+  entries,
+  previous,
+  backups,
+  syncChunks,
+  extra = {},
+  removed = [],
+}) {
   const kept = new Set(entries.map((e) => e.toLowerCase()));
-  const dropped = previous.filter((e) => !kept.has(e.toLowerCase()));
+  const allowed = new Set(removed.map((e) => e.toLowerCase()));
+  const dropped = previous.filter(
+    (e) => !kept.has(e.toLowerCase()) && !allowed.has(e.toLowerCase()),
+  );
   if (dropped.length) {
     throw new Error(
       `Refusing to drop ${dropped.length} stored entr${dropped.length === 1 ? 'y' : 'ies'}.`,
     );
   }
   const meta = { at: Date.now(), version: chrome.runtime?.getManifest?.().version ?? '' };
+  if (removed.length) await writeSync(installId, entries, syncChunks, true);
   await chrome.storage.local.set({
     ...extra,
     [LOCAL_ENTRIES]: entries,
@@ -208,15 +226,20 @@ async function commit({ installId, entries, previous, backups, syncChunks, extra
     [LOCAL_SCHEMA]: SCHEMA_VERSION,
     [LOCAL_BACKUPS]: pushBackup(backups, entries, meta),
   });
+  if (!removed.length) await writeSync(installId, entries, syncChunks, false);
+}
+
+async function writeSync(installId, entries, previousChunks, strict) {
   const chunks = chunkEntries(entries);
   const payload = { [SYNC_META]: { installId, chunks: chunks.length } };
   chunks.forEach((c, i) => (payload[SYNC_CHUNK + i] = c));
   // Blank (never remove) chunks left over from a longer list.
-  for (let i = chunks.length; i < syncChunks; i++) payload[SYNC_CHUNK + i] = [];
+  for (let i = chunks.length; i < previousChunks; i++) payload[SYNC_CHUNK + i] = [];
   try {
     await chrome.storage.sync.set(payload);
-  } catch {
+  } catch (err) {
     // Quota exceeded or sync storage unavailable: the local copies still hold everything.
+    if (strict) throw new Error('sync', { cause: err });
   }
 }
 
@@ -335,6 +358,37 @@ export async function addUserRules(items) {
     syncChunks: s.sync.chunks,
     extra: s.corrupt ? { [LOCAL_CORRUPT]: s.raw[LOCAL_ENTRIES] } : {},
   });
+}
+
+/**
+ * Remove entries from every copy. Refused while Nuclear is locked.
+ * @param {string[]} toRemove entries as shown in the list
+ * @returns {Promise<number>} how many entries were removed
+ * @throws {Error} 'locked' | 'sync'
+ */
+export async function removeUserEntries(toRemove, now = Date.now()) {
+  const { nuclear } = await loadSettings();
+  if (isLocked(nuclear, now)) throw new Error('locked');
+  const s = await readState();
+  if (s.newerSchema) throw new Error('locked'); // never rewrite data from a newer ArYS
+  const keys = new Set(toRemove.map((e) => entryKey(String(e).trim())));
+  const current = mergeEntries(s.localEntries, s.lastBackup, s.sync.entries);
+  const entries = current.filter((e) => !keys.has(entryKey(e)));
+  const removed = [...current, ...s.localEntries].filter((e) => keys.has(entryKey(e)));
+  if (!removed.length) return 0;
+  await commit({
+    installId: s.local[LOCAL_INSTALL_ID] ?? s.sync.installId ?? crypto.randomUUID(),
+    entries,
+    previous: s.localEntries,
+    backups: s.backups,
+    syncChunks: s.sync.chunks,
+    removed,
+  });
+  const ruleIds = s.rules.filter((r) => keys.has(conditionKey(r.condition))).map((r) => r.id);
+  if (ruleIds.length) {
+    await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: ruleIds });
+  }
+  return new Set(removed.map((e) => entryKey(e))).size;
 }
 
 export async function getUserRules() {

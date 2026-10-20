@@ -13,6 +13,7 @@
   --accent-text: #ffffff;
   --danger: #c62828;
   --ok: #157a3c;
+  --warn: #b45309;
   --shadow: 0 1px 2px rgb(16 24 40 / 0.06), 0 6px 24px rgb(16 24 40 / 0.06);
   --radius: 10px;
   --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -34,6 +35,7 @@
     --accent-text: #04201d;
     --danger: #f87171;
     --ok: #4ade80;
+    --warn: #fbbf24;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 28px rgb(0 0 0 / 0.35);
   }
 }
@@ -52,11 +54,17 @@
   --accent-text: #04201d;
   --danger: #f87171;
   --ok: #4ade80;
+  --warn: #fbbf24;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 28px rgb(0 0 0 / 0.35);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Components set display: flex; the hidden attribute must still win. */
+[hidden] {
+  display: none !important;
 }
 
 html,
@@ -149,6 +157,8 @@ button.ghost {
 input[type='text'],
 input[type='url'],
 input[type='search'],
+input[type='number'],
+input[type='datetime-local'],
 select,
 textarea {
   width: 100%;

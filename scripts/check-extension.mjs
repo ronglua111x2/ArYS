@@ -1,7 +1,7 @@
 // Static guardrails for extension/. Run via `npm run validate` (part of `npm run check` and CI).
 // Enforces mechanically:
 //   - no tracking: no network APIs, no remote or dynamic code, minimal permissions;
-//   - add-only list: no code path that removes or weakens blocking rules;
+//   - rule changes only in lib/user-rules.js (the one place that checks the Nuclear lock);
 //   - lightweight: one event-driven worker, no timers, no polling, no keep-alive;
 //   - store hygiene: locales complete, name "ArYS", manifest files present, nothing dev-only.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -117,10 +117,9 @@ const FORBIDDEN_CODE = [
   [/new\s+Function\s*\(/, 'new Function()'],
   [/importScripts\s*\(/, 'importScripts()'],
   [/\bimport\s*\(\s*['"`]https?:/, 'remote import()'],
-  [/removeRuleIds|removeRuleFilter/, 'rule removal - the list is add-only'],
   [/updateSessionRules|updateEnabledRulesets|updateStaticRules/, 'disabling or bypassing rules'],
   [/['"`](allow|allowAllRequests|upgradeScheme|modifyHeaders)['"`]/, 'non-block rule action'],
-  [/storage\.\w+\.(remove|clear)\s*\(/, 'storage remove/clear - lists only grow'],
+  [/storage\.\w+\.(remove|clear)\s*\(/, 'storage remove/clear - copies are rewritten, never wiped'],
   [/chrome\.management/, 'chrome.management'],
   [/\bsetInterval\s*\(/, 'setInterval - keep ArYS idle'],
   [/deploy-info/, 'dev-only deploy code'],
@@ -130,7 +129,8 @@ const FORBIDDEN_HTML = [
   [/<link[^>]+href\s*=\s*["']https?:/i, 'remote <link>'],
   [/<script(?![^>]*\bsrc=)[^>]*>\s*\S/i, 'inline <script> (blocked by MV3 CSP)'],
 ];
-const DYNAMIC_RULES_FILE = 'extension/lib/user-rules.js'; // the only file that may add DNR rules
+// The only file that may change dynamic rules; it refuses removals while Nuclear is locked.
+const DYNAMIC_RULES_FILE = 'extension/lib/user-rules.js';
 
 function* walk(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -148,8 +148,11 @@ for (const file of walk(src)) {
     for (const [re, label] of FORBIDDEN_CODE) {
       if (re.test(text)) fail(`${rel}: forbidden ${label}.`);
     }
-    if (/updateDynamicRules/.test(text) && rel !== DYNAMIC_RULES_FILE) {
-      fail(`${rel}: updateDynamicRules is only allowed in ${DYNAMIC_RULES_FILE}.`);
+    if (
+      /updateDynamicRules|removeRuleIds|removeRuleFilter/.test(text) &&
+      rel !== DYNAMIC_RULES_FILE
+    ) {
+      fail(`${rel}: changing dynamic rules is only allowed in ${DYNAMIC_RULES_FILE}.`);
     }
   } else if (file.endsWith('.html')) {
     const text = readFileSync(file, 'utf8');

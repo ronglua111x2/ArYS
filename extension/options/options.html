@@ -45,7 +45,10 @@
         <section id="view-blocked" class="view">
           <header class="view-header">
             <div>
-              <h1 data-i18n="blocked.title">Blocked sites</h1>
+              <div class="title-row">
+                <h1 data-i18n="blocked.title">Blocked sites</h1>
+                <span id="nuclear-chip" class="chip" hidden></span>
+              </div>
               <p class="muted small" data-i18n="blocked.subtitle"></p>
             </div>
             <div class="actions">
@@ -98,24 +101,26 @@
             <span id="saved" class="saved small" hidden data-i18n="toast.saved">Saved</span>
           </header>
 
-          <div class="card setting">
-            <label for="language" data-i18n="settings.language">Language</label>
-            <select id="language">
-              <option value="auto" data-i18n="settings.languageAuto">Same as browser</option>
-              <option value="en">English</option>
-              <option value="vi">Tiếng Việt</option>
-            </select>
+          <div class="card setting two-col">
+            <div>
+              <label for="language" data-i18n="settings.language">Language</label>
+              <select id="language">
+                <option value="auto" data-i18n="settings.languageAuto">Same as browser</option>
+                <option value="en">English</option>
+                <option value="vi">Tiếng Việt</option>
+              </select>
+            </div>
+            <div>
+              <label for="theme" data-i18n="settings.theme">Theme</label>
+              <select id="theme">
+                <option value="system" data-i18n="theme.system">System</option>
+                <option value="light" data-i18n="theme.light">Light</option>
+                <option value="dark" data-i18n="theme.dark">Dark</option>
+              </select>
+            </div>
           </div>
 
-          <div class="card setting">
-            <label for="theme" data-i18n="settings.theme">Theme</label>
-            <select id="theme">
-              <option value="system" data-i18n="theme.system">System</option>
-              <option value="light" data-i18n="theme.light">Light</option>
-              <option value="dark" data-i18n="theme.dark">Dark</option>
-            </select>
-          </div>
-
+          <!-- Block page -->
           <div class="card setting">
             <span class="setting-title" data-i18n="settings.blockPage">When a site is blocked</span>
             <label class="check">
@@ -139,27 +144,117 @@
               hidden
               data-i18n="settings.blockPageUrlInvalid"
             ></p>
-          </div>
 
-          <div class="card setting">
-            <label for="block-message" data-i18n="settings.message"
-              >Message on the block page</label
-            >
-            <textarea
-              id="block-message"
-              rows="3"
-              maxlength="200"
-              data-i18n-placeholder="settings.messagePlaceholder"
-            ></textarea>
-            <span id="message-counter" class="muted small counter"></span>
-          </div>
+            <div id="block-custom" class="block-custom">
+              <div class="fields">
+                <label for="block-title" data-i18n="settings.blockTitle">Title</label>
+                <input
+                  id="block-title"
+                  type="text"
+                  maxlength="60"
+                  data-i18n-placeholder="settings.blockTitlePlaceholder"
+                />
 
-          <div class="card setting disabled">
-            <div class="setting-title-row">
-              <span class="setting-title" data-i18n="settings.nuclear">Nuclear option</span>
-              <span class="badge" data-i18n="settings.nuclearSoon">Coming soon</span>
+                <label for="block-message" data-i18n="settings.message">Message</label>
+                <textarea
+                  id="block-message"
+                  rows="3"
+                  maxlength="280"
+                  data-i18n-placeholder="settings.messagePlaceholder"
+                ></textarea>
+                <span id="message-counter" class="muted small counter"></span>
+
+                <span class="field-label" data-i18n="settings.accent">Accent colour</span>
+                <div id="accents" class="swatches" role="radiogroup"></div>
+
+                <span class="field-label" data-i18n="settings.image">Image</span>
+                <div class="inline">
+                  <button type="button" id="image-choose" data-i18n="settings.imageChoose">
+                    Choose image…
+                  </button>
+                  <button
+                    type="button"
+                    id="image-remove"
+                    class="ghost"
+                    data-i18n="settings.imageRemove"
+                  >
+                    Remove image
+                  </button>
+                  <input
+                    id="image-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    hidden
+                  />
+                </div>
+                <p id="image-error" class="error small" hidden data-i18n="settings.imageTooBig"></p>
+
+                <button
+                  type="button"
+                  id="reset-block"
+                  class="ghost reset"
+                  data-i18n="settings.resetBlockPage"
+                >
+                  Reset to default
+                </button>
+              </div>
+
+              <div class="preview-wrap">
+                <span class="field-label" data-i18n="settings.preview">Preview</span>
+                <div id="block-preview" class="block-preview">
+                  <img id="pv-image" alt="" hidden />
+                  <strong id="pv-title"></strong>
+                  <p id="pv-message"></p>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- Nuclear -->
+          <div class="card setting" id="nuclear-card">
+            <span class="setting-title" data-i18n="settings.nuclear">Nuclear option</span>
             <p class="muted small" data-i18n="settings.nuclearDesc"></p>
+
+            <div id="nuclear-form" class="nuclear-form">
+              <div class="inline">
+                <label for="nuclear-amount" data-i18n="nuclear.duration">Duration</label>
+                <input id="nuclear-amount" type="number" min="1" step="any" value="1" />
+                <select id="nuclear-unit">
+                  <option value="minutes" data-i18n="nuclear.minutes">minutes</option>
+                  <option value="hours" selected data-i18n="nuclear.hours">hours</option>
+                  <option value="days" data-i18n="nuclear.days">days</option>
+                </select>
+              </div>
+              <div class="inline">
+                <span data-i18n="nuclear.start">Start</span>
+                <label class="check">
+                  <input type="radio" name="nuclear-start" value="now" checked />
+                  <span data-i18n="nuclear.startNow">Now</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="nuclear-start" value="at" />
+                  <span data-i18n="nuclear.startAt">At</span>
+                </label>
+                <input id="nuclear-at" type="datetime-local" disabled />
+              </div>
+              <p id="nuclear-error" class="error small" hidden></p>
+              <div>
+                <button
+                  type="button"
+                  id="nuclear-start"
+                  class="primary"
+                  data-i18n="nuclear.startButton"
+                >
+                  Start Nuclear
+                </button>
+              </div>
+            </div>
+
+            <div id="nuclear-status" class="nuclear-status" hidden>
+              <span class="lock" aria-hidden="true">🔒</span>
+              <strong id="nuclear-countdown" class="countdown"></strong>
+              <span id="nuclear-until" class="muted small"></span>
+            </div>
           </div>
         </section>
 
@@ -216,15 +311,26 @@
         <p class="help muted small" data-i18n="add.help"></p>
         <p id="summary" class="summary" aria-live="polite"></p>
         <ul id="preview" class="preview"></ul>
-        <label class="check small">
-          <input id="confirm" type="checkbox" />
-          <span data-i18n="add.confirm"></span>
-        </label>
+        <p id="add-locked" class="warn small" hidden data-i18n="add.lockedNote"></p>
         <div class="dialog-actions">
           <button type="button" id="cancel" class="ghost" data-i18n="common.cancel">Cancel</button>
           <button type="submit" id="add" class="primary" disabled data-i18n="add.submitEmpty">
             Add
           </button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="nuclear-dialog">
+      <form id="nuclear-confirm-form" method="dialog">
+        <h2 data-i18n="nuclear.confirmTitle">Start Nuclear?</h2>
+        <p id="nuclear-confirm-from"></p>
+        <p id="nuclear-confirm-until"></p>
+        <div class="dialog-actions">
+          <button type="button" id="nuclear-cancel" class="ghost" data-i18n="common.cancel">
+            Cancel
+          </button>
+          <button type="submit" class="primary" data-i18n="nuclear.confirm">Start</button>
         </div>
       </form>
     </dialog>

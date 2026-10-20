@@ -15,7 +15,11 @@ describe('settings', () => {
       language: 'auto',
       blockPage: 'default',
       blockPageUrl: '',
+      blockTitle: '',
       blockMessage: '',
+      blockAccent: 'teal',
+      blockImage: '',
+      nuclear: { enabled: false, startsAt: 0, unlockAt: 0 },
     });
     const s = normalizeSettings({
       language: 'xx',
@@ -27,6 +31,11 @@ describe('settings', () => {
     expect(s.language).toBe('auto');
     expect(s.blockPage).toBe('default'); // no valid URL -> default page
     expect(s.blockMessage).toHaveLength(MESSAGE_MAX);
+    expect(normalizeSettings({ blockImage: 'https://x.test/a.png' }).blockImage).toBe('');
+    expect(normalizeSettings({ blockImage: 'data:image/png;base64,AAAA' }).blockImage).toBe(
+      'data:image/png;base64,AAAA',
+    );
+    expect(normalizeSettings({ blockAccent: '#ff0000' }).blockAccent).toBe('teal');
     expect(s).not.toHaveProperty('tracking');
   });
 });

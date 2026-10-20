@@ -4,7 +4,7 @@
     "description": "Extension name. Must stay ArYS in every language."
   },
   "extDescription": {
-    "message": "Block distracting websites with a list you can only add to. Lightweight, no tracking, no accounts.",
+    "message": "Block distracting websites, with a Nuclear lock you cannot cancel. Lightweight, no tracking, no accounts.",
     "description": "Short description shown in the store and on edge://extensions (max 132 characters)."
   }
 }

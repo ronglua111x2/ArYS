@@ -10,8 +10,8 @@ Nothing. ArYS does not collect, record, transmit, sell or share personal informa
 
 ## What ArYS stores on your device
 
-- **Your blocklist and settings**, in the browser's extension storage on your device.
-- **A copy of your blocklist in the browser's sync storage.** If you turned on browser sync, your browser (not ArYS) may sync it to your account so your list can be restored. ArYS never receives it.
+- **Your blocklist and settings** (including the text and image of your custom block page), in the browser's extension storage on your device.
+- **A copy of your blocklist and of the Nuclear lock in the browser's sync storage.** If you turned on browser sync, your browser (not ArYS) may sync it to your account so your list can be restored. ArYS never receives it.
 
 Uninstalling ArYS removes its data from the device.
 

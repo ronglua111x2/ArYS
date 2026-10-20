@@ -1,4 +1,4 @@
-// Export / import of the user's list. Import is add-only: entries go through the same preview and
+// Export / import of the user's list. Import only adds: entries go through the same preview and
 // checks as typed ones, and nothing already on the list is ever replaced or removed.
 
 export const EXPORT_FORMAT = 'arys-blocklist';
