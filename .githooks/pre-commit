@@ -1,0 +1,5 @@
+#!/bin/sh
+# Enabled by `npm install` (prepare sets core.hooksPath). Blocks secrets/private data, then runs
+# the same checks as CI.
+node scripts/guard-git.mjs staged || exit 1
+npm run --silent check

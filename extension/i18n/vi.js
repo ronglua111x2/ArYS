@@ -1,0 +1,142 @@
+// Chuỗi giao diện tiếng Việt. Phải có đủ mọi khóa của en.js (test/i18n.test.js kiểm tra).
+export default {
+  'app.name': 'ArYS',
+  'app.slogan': 'Tập trung vào điều quan trọng.',
+
+  'nav.blocked': 'Trang bị chặn',
+  'nav.settings': 'Cài đặt',
+  'nav.about': 'Giới thiệu',
+  'nav.label': 'Mục',
+
+  'theme.label': 'Giao diện',
+  'theme.system': 'Theo hệ thống',
+  'theme.light': 'Sáng',
+  'theme.dark': 'Tối',
+
+  'common.cancel': 'Hủy',
+  'common.close': 'Đóng',
+  'common.back': 'Quay lại',
+
+  'blocked.title': 'Trang bị chặn',
+  'blocked.subtitle': 'Chỉ thêm được: mục đã thêm không thể sửa hay xóa.',
+  'blocked.add': '+ Thêm',
+  'blocked.import': 'Nhập',
+  'blocked.export': 'Xuất',
+  'blocked.search': 'Tìm…',
+  'blocked.count': '{n} mục',
+  'blocked.empty': 'Chưa chặn gì. Bấm “+ Thêm” để bắt đầu.',
+  'blocked.noMatch': 'Không có kết quả.',
+
+  'filter.all': 'Tất cả',
+  'filter.site': 'Trang web',
+  'filter.pattern': 'Mẫu',
+  'filter.system': 'Trang trình duyệt',
+  'filter.regex': 'Regex',
+
+  'kind.site': 'trang web',
+  'kind.pattern': 'mẫu',
+  'kind.system': 'trang trình duyệt',
+  'kind.regex': 'regex',
+
+  'entry.notEnforceable': 'Không thực thi được: {reason}',
+
+  'reason.tooShort': 'quá ngắn – sẽ chặn gần như mọi thứ',
+  'reason.keywordShort': 'từ khóa quá ngắn (tối thiểu 4 ký tự)',
+  'reason.tooBroad': 'quá rộng – khớp cả các trang không liên quan',
+  'reason.re2': 'không hỗ trợ lookahead và backreference',
+  'reason.invalidRegex': 'biểu thức chính quy không hợp lệ',
+  'reason.emptyRegex': 'biểu thức chính quy rỗng',
+  'reason.regexLong': 'biểu thức chính quy quá dài',
+  'reason.incomplete': 'địa chỉ trang trình duyệt chưa đầy đủ',
+  'reason.invalid': 'không phải trang web, trang hay mẫu hợp lệ',
+  'reason.browser': 'bị trình duyệt từ chối',
+
+  'add.title': 'Thêm vào danh sách chặn',
+  'add.importTitle': 'Nhập vào danh sách chặn',
+  'add.placeholder': 'Mỗi dòng một mục (dán tối đa 500)\nsite.com\nsite.com/duong-dan\n*tukhoa',
+  'add.help':
+    'site.com cả trang · site.com/duong-dan theo đường dẫn · *tukhoa mọi địa chỉ chứa “tukhoa” · edge://trang trang của trình duyệt',
+  'add.summaryAdd': '{n} sẽ thêm',
+  'add.summarySkipped': '{n} đã chặn (bỏ qua)',
+  'add.summaryRejected': '{n} bị từ chối',
+  'add.tooMany': '{n} dòng – tối đa {max} mỗi lần.',
+  'add.badgeSkipped': 'bỏ qua',
+  'add.badgeRejected': 'từ chối',
+  'add.confirm': 'Vĩnh viễn – tôi không thể gỡ các mục này sau đó',
+  'add.submit': 'Thêm {n}',
+  'add.submitEmpty': 'Thêm',
+
+  'import.errorEmpty': 'Tệp không có mục nào.',
+  'import.errorFormat':
+    'Tệp không được hỗ trợ. Dùng tệp xuất từ ArYS (.json) hoặc tệp văn bản mỗi dòng một mục.',
+
+  'toast.added': 'Đã thêm {n}.',
+  'toast.reblocked': 'Đã chặn {n} tab đang mở.',
+  'toast.exported': 'Đã xuất {n} mục.',
+  'toast.exportEmpty': 'Chưa có gì để xuất.',
+  'toast.saved': 'Đã lưu',
+
+  'settings.title': 'Cài đặt',
+  'settings.language': 'Ngôn ngữ',
+  'settings.languageAuto': 'Theo trình duyệt',
+  'settings.theme': 'Giao diện',
+  'settings.blockPage': 'Khi một trang bị chặn',
+  'settings.blockPageDefault': 'Hiện trang chặn của ArYS',
+  'settings.blockPageUrl': 'Chuyển tới trang của tôi',
+  'settings.blockPageUrlPlaceholder': 'https://example.com/tap-trung',
+  'settings.blockPageUrlInvalid': 'Nhập địa chỉ http(s) đầy đủ.',
+  'settings.message': 'Lời nhắn trên trang chặn',
+  'settings.messagePlaceholder': 'Để trống để dùng lời nhắn mặc định',
+  'settings.messageCounter': '{n}/{max}',
+  'settings.nuclear': 'Chế độ Nuclear',
+  'settings.nuclearDesc':
+    'Chặn danh sách của bạn – hoặc mọi trang – trong một khoảng thời gian, không thể hủy. Sẽ có ở phiên bản sau.',
+  'settings.nuclearSoon': 'Sắp có',
+
+  'about.title': 'Giới thiệu',
+  'about.description':
+    'Trình chặn website nhẹ. Không theo dõi, không tài khoản – mọi thứ nằm trên thiết bị của bạn.',
+  'about.version': 'Phiên bản {v}',
+  'about.source': 'Mã nguồn',
+  'about.license': 'Giấy phép (MIT)',
+  'about.privacy': 'Chính sách quyền riêng tư',
+  'about.terms': 'Điều khoản sử dụng',
+  'about.placeholder': 'Chỗ dành cho thương hiệu – logo, hình ảnh và ghi công sẽ đặt ở đây.',
+
+  'welcome.title': 'Chào mừng đến với ArYS',
+  'welcome.lead': 'Trình chặn nhẹ nhàng cho những trang lấy mất sự tập trung của bạn.',
+  'welcome.point1': 'Thêm trang web, đường dẫn hoặc từ khóa – chúng bị chặn ngay.',
+  'welcome.point2':
+    'Chỉ thêm được: đã thêm thì không sửa hay xóa được. Gỡ cài đặt là cách duy nhất để làm lại từ đầu.',
+  'welcome.point3':
+    'Không theo dõi, không tài khoản, không kết nối mạng. Danh sách nằm trong trình duyệt của bạn.',
+  'welcome.termsIntro': 'Trước khi bắt đầu, vui lòng đọc:',
+  'welcome.accept': 'Tôi đã đọc và đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư',
+  'welcome.start': 'Bắt đầu',
+
+  'legal.terms.title': 'Điều khoản sử dụng',
+  'legal.terms.p1':
+    'ArYS là phần mềm miễn phí, mã nguồn mở, được cung cấp “nguyên trạng”, không kèm bất kỳ bảo đảm nào, theo Giấy phép MIT.',
+  'legal.terms.p2':
+    'ArYS chỉ cho thêm: mục bạn đã thêm không thể sửa hay xóa từ bên trong extension. Cách duy nhất để làm lại danh sách là gỡ cài đặt ArYS. Hãy kiểm tra từng mục trước khi thêm.',
+  'legal.terms.p3':
+    'Bạn quyết định chặn gì, và chịu trách nhiệm về các mục mình thêm cũng như việc tuân thủ quy định áp dụng cho thiết bị bạn dùng.',
+  'legal.terms.p4':
+    'Nếu mục của bạn khớp với trang bạn cần dùng – kể cả trang trình duyệt bạn chọn chặn – ArYS cũng sẽ chặn chúng.',
+  'legal.terms.p5':
+    'Điều khoản có thể thay đổi ở các phiên bản sau. Khi đó bạn sẽ được yêu cầu đồng ý lại.',
+  'legal.privacy.title': 'Chính sách quyền riêng tư',
+  'legal.privacy.p1':
+    'ArYS không thu thập gì. Không kết nối mạng, không tài khoản, không phân tích hay quảng cáo.',
+  'legal.privacy.p2':
+    'Danh sách và cài đặt được lưu trong bộ nhớ extension của trình duyệt trên thiết bị này. Nếu bật đồng bộ trình duyệt, danh sách cũng được lưu trong bộ nhớ đồng bộ để có thể khôi phục; phần đó do trình duyệt xử lý, không phải ArYS.',
+  'legal.privacy.p3':
+    'Để chặn trang, trình duyệt so địa chỉ với các quy tắc của bạn. ArYS cũng kiểm tra trong bộ nhớ các lần đổi địa chỉ trong trang và trang trình duyệt để chặn chúng. Địa chỉ không bao giờ được lưu hay gửi đi.',
+  'legal.privacy.p4': 'Gỡ cài đặt ArYS sẽ xóa dữ liệu của nó khỏi thiết bị này.',
+  'legal.privacy.p5': 'Có câu hỏi? Mở một issue trên trang GitHub của dự án.',
+
+  'blockedPage.title': 'Trang này đã bị chặn',
+  'blockedPage.default':
+    'Bạn đã chọn tránh xa trang này. Hít một hơi thật sâu rồi quay lại với điều quan trọng.',
+  'blockedPage.open': 'Mở ArYS',
+};

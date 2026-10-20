@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [publish]
+  pull_request:
+    branches: [publish]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint, test, guardrails
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Lint, format, unit tests, extension guardrails
+        run: npm run check
+      - name: Repository guard (public files only, no secrets)
+        run: node scripts/guard-git.mjs head
+        env:
+          ARYS_PUBLIC: '1'
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+      - name: Build store package
+        run: npm run pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arys-extension
+          path: dist/*.zip
+          if-no-files-found: error

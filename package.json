@@ -1,0 +1,42 @@
+{
+  "name": "arys",
+  "version": "0.3.0",
+  "private": true,
+  "description": "ArYS – a lightweight, add-only website blocker for Microsoft Edge. No tracking, no accounts.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ronglua111x2/ArYS.git"
+  },
+  "homepage": "https://github.com/ronglua111x2/ArYS#readme",
+  "bugs": {
+    "url": "https://github.com/ronglua111x2/ArYS/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "node scripts/check-extension.mjs",
+    "check": "npm run lint && npm run format:check && npm run test && npm run validate",
+    "pack": "node scripts/pack.mjs",
+    "bump": "node scripts/bump-version.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "guard:staged": "node scripts/guard-git.mjs staged",
+    "guard:head": "node scripts/guard-git.mjs head",
+    "prepare": "git config core.hooksPath .githooks || exit 0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "fflate": "^0.8.3",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "vitest": "^4.1.12"
+  }
+}

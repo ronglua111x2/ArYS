@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+
+# Secrets: never commit (also enforced by .githooks/ + scripts/guard-git.mjs)
+.env
+.env.*
+!.env.example
+
+# Written by the browser when extension/ is loaded unpacked
+extension/_metadata/

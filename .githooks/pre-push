@@ -1,0 +1,4 @@
+#!/bin/sh
+# Every commit about to be pushed is checked for secrets, private data and non-public files;
+# only the "publish" branch and v* tags may be pushed.
+node scripts/guard-git.mjs pre-push

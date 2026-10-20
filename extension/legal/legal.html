@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ArYS</title>
+    <script src="../ui/theme.js"></script>
+    <link rel="stylesheet" href="../ui/base.css" />
+    <style>
+      body {
+        padding: 2rem 1rem;
+        display: flex;
+        justify-content: center;
+      }
+      article {
+        width: min(42rem, 100%);
+        padding: 2rem;
+      }
+      article h1 {
+        margin-bottom: 1rem;
+      }
+      article p {
+        margin: 0 0 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="card">
+      <h1 id="title"></h1>
+      <div id="body"></div>
+      <a id="back" class="button" href="../options/options.html" data-i18n="common.back">Back</a>
+    </article>
+    <script type="module" src="legal.js"></script>
+  </body>
+</html>

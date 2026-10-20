@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ArYS</title>
+    <script src="../ui/theme.js"></script>
+    <link rel="stylesheet" href="../ui/base.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="../icons/icon-48.png" alt="" width="36" height="36" />
+          <div>
+            <strong data-i18n="app.name">ArYS</strong>
+            <small class="muted" data-i18n="app.slogan"></small>
+          </div>
+        </div>
+        <nav aria-label="Sections" data-i18n-aria-label="nav.label">
+          <button type="button" class="nav-item active" data-view="blocked">
+            <span aria-hidden="true">⛔</span><span data-i18n="nav.blocked">Blocked sites</span>
+          </button>
+          <button type="button" class="nav-item" data-view="settings">
+            <span aria-hidden="true">⚙</span><span data-i18n="nav.settings">Settings</span>
+          </button>
+          <button type="button" class="nav-item" data-view="about">
+            <span aria-hidden="true">ℹ</span><span data-i18n="nav.about">About</span>
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <button
+            type="button"
+            id="theme-toggle"
+            class="ghost"
+            data-i18n-title="theme.label"
+          ></button>
+          <span id="version" class="muted small"></span>
+        </div>
+      </aside>
+
+      <main>
+        <!-- Blocked sites: always the first view -->
+        <section id="view-blocked" class="view">
+          <header class="view-header">
+            <div>
+              <h1 data-i18n="blocked.title">Blocked sites</h1>
+              <p class="muted small" data-i18n="blocked.subtitle"></p>
+            </div>
+            <div class="actions">
+              <button type="button" id="import" data-i18n="blocked.import">Import</button>
+              <button type="button" id="export" data-i18n="blocked.export">Export</button>
+              <button type="button" id="open-add" class="primary" data-i18n="blocked.add">
+                + Add
+              </button>
+            </div>
+          </header>
+
+          <div class="toolbar">
+            <input
+              id="search"
+              type="search"
+              autocomplete="off"
+              data-i18n-placeholder="blocked.search"
+            />
+            <div class="filters" role="group">
+              <button type="button" class="filter active" data-kind="all" data-i18n="filter.all">
+                All
+              </button>
+              <button type="button" class="filter" data-kind="site" data-i18n="filter.site">
+                Sites
+              </button>
+              <button type="button" class="filter" data-kind="pattern" data-i18n="filter.pattern">
+                Patterns
+              </button>
+              <button type="button" class="filter" data-kind="system" data-i18n="filter.system">
+                Browser pages
+              </button>
+            </div>
+          </div>
+
+          <p id="count" class="muted small"></p>
+          <ul id="list" class="list card"></ul>
+          <p id="empty" class="empty muted" hidden></p>
+          <input
+            id="import-file"
+            type="file"
+            accept=".json,.txt,text/plain,application/json"
+            hidden
+          />
+        </section>
+
+        <!-- Settings -->
+        <section id="view-settings" class="view" hidden>
+          <header class="view-header">
+            <h1 data-i18n="settings.title">Settings</h1>
+            <span id="saved" class="saved small" hidden data-i18n="toast.saved">Saved</span>
+          </header>
+
+          <div class="card setting">
+            <label for="language" data-i18n="settings.language">Language</label>
+            <select id="language">
+              <option value="auto" data-i18n="settings.languageAuto">Same as browser</option>
+              <option value="en">English</option>
+              <option value="vi">Tiếng Việt</option>
+            </select>
+          </div>
+
+          <div class="card setting">
+            <label for="theme" data-i18n="settings.theme">Theme</label>
+            <select id="theme">
+              <option value="system" data-i18n="theme.system">System</option>
+              <option value="light" data-i18n="theme.light">Light</option>
+              <option value="dark" data-i18n="theme.dark">Dark</option>
+            </select>
+          </div>
+
+          <div class="card setting">
+            <span class="setting-title" data-i18n="settings.blockPage">When a site is blocked</span>
+            <label class="check">
+              <input type="radio" name="block-page" value="default" />
+              <span data-i18n="settings.blockPageDefault">Show the ArYS block page</span>
+            </label>
+            <label class="check">
+              <input type="radio" name="block-page" value="url" />
+              <span data-i18n="settings.blockPageUrl">Go to my own page</span>
+            </label>
+            <input
+              id="block-page-url"
+              type="url"
+              inputmode="url"
+              autocomplete="off"
+              data-i18n-placeholder="settings.blockPageUrlPlaceholder"
+            />
+            <p
+              id="block-page-url-error"
+              class="error small"
+              hidden
+              data-i18n="settings.blockPageUrlInvalid"
+            ></p>
+          </div>
+
+          <div class="card setting">
+            <label for="block-message" data-i18n="settings.message"
+              >Message on the block page</label
+            >
+            <textarea
+              id="block-message"
+              rows="3"
+              maxlength="200"
+              data-i18n-placeholder="settings.messagePlaceholder"
+            ></textarea>
+            <span id="message-counter" class="muted small counter"></span>
+          </div>
+
+          <div class="card setting disabled">
+            <div class="setting-title-row">
+              <span class="setting-title" data-i18n="settings.nuclear">Nuclear option</span>
+              <span class="badge" data-i18n="settings.nuclearSoon">Coming soon</span>
+            </div>
+            <p class="muted small" data-i18n="settings.nuclearDesc"></p>
+          </div>
+        </section>
+
+        <!-- About -->
+        <section id="view-about" class="view" hidden>
+          <header class="view-header">
+            <h1 data-i18n="about.title">About</h1>
+          </header>
+          <div class="card about">
+            <img src="../icons/icon-128.png" alt="" width="72" height="72" />
+            <h2 data-i18n="app.name">ArYS</h2>
+            <p class="slogan" data-i18n="app.slogan"></p>
+            <p id="about-version" class="muted small"></p>
+            <p data-i18n="about.description"></p>
+            <p class="placeholder muted small" data-i18n="about.placeholder"></p>
+            <div class="links">
+              <a
+                class="button"
+                href="https://github.com/ronglua111x2/ArYS"
+                target="_blank"
+                rel="noopener"
+                data-i18n="about.source"
+                >Source code</a
+              >
+              <a
+                class="button"
+                href="https://github.com/ronglua111x2/ArYS/blob/publish/LICENSE"
+                target="_blank"
+                rel="noopener"
+                data-i18n="about.license"
+                >License (MIT)</a
+              >
+              <a class="button" href="../legal/legal.html?doc=privacy" data-i18n="about.privacy"
+                >Privacy policy</a
+              >
+              <a class="button" href="../legal/legal.html?doc=terms" data-i18n="about.terms"
+                >Terms of use</a
+              >
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="add-dialog">
+      <form id="add-form" method="dialog">
+        <h2 id="add-title" data-i18n="add.title">Add to blocklist</h2>
+        <textarea
+          id="add-input"
+          rows="8"
+          spellcheck="false"
+          data-i18n-placeholder="add.placeholder"
+        ></textarea>
+        <p class="help muted small" data-i18n="add.help"></p>
+        <p id="summary" class="summary" aria-live="polite"></p>
+        <ul id="preview" class="preview"></ul>
+        <label class="check small">
+          <input id="confirm" type="checkbox" />
+          <span data-i18n="add.confirm"></span>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" id="cancel" class="ghost" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" id="add" class="primary" disabled data-i18n="add.submitEmpty">
+            Add
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

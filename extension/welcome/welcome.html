@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ArYS</title>
+    <script src="../ui/theme.js"></script>
+    <link rel="stylesheet" href="../ui/base.css" />
+    <link rel="stylesheet" href="welcome.css" />
+  </head>
+  <body>
+    <main class="card welcome">
+      <img src="../icons/icon-128.png" alt="" width="80" height="80" />
+      <h1 data-i18n="welcome.title">Welcome to ArYS</h1>
+      <p class="lead" data-i18n="welcome.lead"></p>
+
+      <ul class="points">
+        <li data-i18n="welcome.point1"></li>
+        <li data-i18n="welcome.point2"></li>
+        <li data-i18n="welcome.point3"></li>
+      </ul>
+
+      <div class="terms">
+        <p class="muted small" data-i18n="welcome.termsIntro"></p>
+        <p class="doc-links">
+          <a href="../legal/legal.html?doc=terms&amp;from=welcome" data-i18n="about.terms"
+            >Terms of use</a
+          >
+          ·
+          <a href="../legal/legal.html?doc=privacy&amp;from=welcome" data-i18n="about.privacy"
+            >Privacy policy</a
+          >
+        </p>
+        <label class="check">
+          <input id="accept" type="checkbox" />
+          <span data-i18n="welcome.accept"></span>
+        </label>
+      </div>
+
+      <div class="row">
+        <select id="language" aria-label="Language">
+          <option value="auto">Auto</option>
+          <option value="en">English</option>
+          <option value="vi">Tiếng Việt</option>
+        </select>
+        <button id="start" type="button" class="primary" disabled data-i18n="welcome.start">
+          Get started
+        </button>
+      </div>
+    </main>
+    <script type="module" src="welcome.js"></script>
+  </body>
+</html>
