@@ -29,10 +29,12 @@ import {
   planNuclear,
 } from '../lib/nuclear.js';
 import { buildExport, exportFileName, IMPORT_MAX, parseImport } from '../lib/transfer.js';
+import { blockPageIsBlocked, riskyEntries } from '../lib/warnings.js';
 import { startTicker } from '../ui/countdown.js';
 
 const $ = (id) => document.getElementById(id);
 const VERSION = chrome.runtime.getManifest().version;
+const OPTIONS_URL = chrome.runtime.getURL('options/options.html');
 
 // First run: the terms must be accepted before anything else (welcome/welcome.html).
 if (!(await termsAccepted())) {
@@ -118,6 +120,25 @@ let entries = [];
 let described = [];
 let userConditions = [];
 let kindFilter = 'all';
+let risk = new Map(); // entry -> warning keys
+
+// Pages ArYS relies on. Entries that block them are allowed; they only get a warning.
+const RISK_KEYS = {
+  blockPage: 'warn.blockPage',
+  extensionsPage: 'warn.extensionsPage',
+  optionsPage: 'warn.optionsPage',
+};
+const riskTargets = () => ({
+  blockPageUrl: settings.blockPage === 'url' ? settings.blockPageUrl : '',
+  optionsUrl: OPTIONS_URL,
+  extensionId: chrome.runtime.id,
+});
+function computeRisk() {
+  risk = new Map();
+  for (const [kind, list] of Object.entries(riskyEntries(entries, riskTargets()))) {
+    for (const e of list) risk.set(e, [...(risk.get(e) ?? []), RISK_KEYS[kind]]);
+  }
+}
 
 async function load() {
   const [rules, list] = await Promise.all([getUserRules(), getUserEntries()]);
@@ -127,6 +148,8 @@ async function load() {
     ...rules.map((r) => r.condition),
     ...described.filter((d) => d.condition && !isDnrCondition(d.condition)).map((d) => d.condition),
   ];
+  computeRisk();
+  renderUrlWarning();
   renderList();
 }
 
@@ -160,7 +183,14 @@ function renderList() {
       remove.title = t(isLockedNow ? 'blocked.removeLocked' : 'blocked.remove');
       remove.setAttribute('aria-label', `${t('blocked.remove')}: ${text.textContent}`);
       remove.addEventListener('click', () => removeEntries([i.entry]));
-      li.append(text, kind, remove);
+      const warnings = risk.get(i.entry);
+      if (warnings) {
+        const w = document.createElement('span');
+        w.className = 'badge warn-badge';
+        w.textContent = '⚠';
+        w.title = warnings.map((k) => t(k, { entries: i.entry })).join('\n');
+        li.append(text, w, kind, remove);
+      } else li.append(text, kind, remove);
       return li;
     }),
   );
@@ -245,6 +275,7 @@ function evaluate() {
   summary.className = 'summary';
   summary.textContent = '';
   preview.replaceChildren();
+  let toAdd = [];
 
   if (lines.length > lineLimit) {
     summary.className = 'summary bad';
@@ -252,6 +283,7 @@ function evaluate() {
   } else if (lines.length) {
     const p = planAdditions(lines.join('\n'), '', userConditions);
     plan = p.add.length ? p : null;
+    toAdd = p.add.map((a) => a.input);
     summary.textContent = [
       t('add.summaryAdd', { n: p.add.length }),
       p.duplicates.length && t('add.summarySkipped', { n: p.duplicates.length }),
@@ -267,8 +299,44 @@ function evaluate() {
       ...p.duplicates.map((d) => previewItem(d, t('add.badgeSkipped'), 'skip')),
     );
   }
+  renderAddWarnings(toAdd);
   $('add').textContent = plan ? t('add.submit', { n: plan.add.length }) : t('add.submitEmpty');
   $('add').disabled = !plan;
+}
+
+const listOf = (arr) =>
+  arr.length > 3 ? `${arr.slice(0, 3).join(', ')} +${arr.length - 3}` : arr.join(', ');
+
+/** Warn (never refuse) when new entries block a page ArYS relies on. */
+function renderAddWarnings(toAdd) {
+  const found = toAdd.length ? riskyEntries(toAdd, riskTargets()) : {};
+  const box = $('add-warnings');
+  box.replaceChildren(
+    ...Object.entries(found)
+      .filter(([, list]) => list.length)
+      .map(([kind, list]) => {
+        const p = document.createElement('p');
+        p.textContent = `⚠ ${t(RISK_KEYS[kind], { entries: listOf(list) })}`;
+        if (kind === 'extensionsPage') p.append(' ', copyLinkButton());
+        return p;
+      }),
+  );
+  box.hidden = !box.childElementCount;
+}
+
+/** Copies this page's address, so it can be bookmarked or opened even without edge://extensions. */
+function copyLinkButton() {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'link-button';
+  b.textContent = t('warn.copyLink');
+  b.addEventListener('click', () =>
+    navigator.clipboard.writeText(OPTIONS_URL).then(
+      () => (b.textContent = t('warn.linkCopied')),
+      () => (b.textContent = OPTIONS_URL),
+    ),
+  );
+  return b;
 }
 
 function openAddDialog({ text = '', max = ADD_MAX, title = 'add.title' } = {}) {
@@ -358,7 +426,13 @@ function renderBlockPage() {
     s.setAttribute('aria-checked', String(s.dataset.accent === settings.blockAccent));
   }
   $('image-remove').hidden = !settings.blockImage;
+  renderUrlWarning();
   renderPreview();
+}
+
+/** A custom page that is itself blocked would loop: ArYS shows its own page instead, and says so. */
+function renderUrlWarning(mode = settings.blockPage, url = settings.blockPageUrl) {
+  $('block-page-url-blocked').hidden = !(mode === 'url' && blockPageIsBlocked(url, entries));
 }
 
 /** The preview follows what is typed, before it is saved. */
@@ -399,6 +473,7 @@ function onBlockPageChange() {
   const url = safeRedirectUrl(urlInput.value);
   const invalid = mode === 'url' && !url;
   $('block-page-url-error').hidden = !invalid || !urlInput.value;
+  renderUrlWarning(mode, url ?? '');
   if (!invalid) saveOrWarn({ blockPage: mode, blockPageUrl: url ?? settings.blockPageUrl });
 }
 for (const r of document.querySelectorAll('input[name="block-page"]')) {
@@ -592,7 +667,9 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
   if (area === 'local' && changes.userEntries) await load();
   if ((area === 'local' && changes[SETTINGS_KEY]) || (area === 'sync' && changes['arys:nuclear'])) {
     settings = await loadSettings();
+    computeRisk(); // the custom block page may have changed
     renderBlockPage();
+    renderList();
     syncTicker();
   }
 });

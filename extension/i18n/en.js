@@ -65,6 +65,14 @@ export default {
   'add.tooMany': '{n} lines – at most {max} at a time.',
   'add.badgeSkipped': 'skipped',
   'add.badgeRejected': 'rejected',
+  'warn.blockPage':
+    '{entries} also blocks your custom block page, which would loop. ArYS will show its own block page instead.',
+  'warn.extensionsPage':
+    '{entries} blocks Edge’s extensions page, where ArYS is managed and removed. Bookmark this settings page first (Ctrl+D) so you can always open ArYS.',
+  'warn.optionsPage':
+    '{entries} blocks this settings page. Once it is closed you can’t open ArYS to remove the entry; only uninstalling ArYS undoes it.',
+  'warn.copyLink': 'Copy settings link',
+  'warn.linkCopied': 'Link copied',
   'add.lockedNote': 'Nuclear is on: entries you add now can’t be removed until it ends.',
   'add.submit': 'Add {n}',
   'add.submitEmpty': 'Add',
@@ -90,6 +98,8 @@ export default {
   'settings.blockPageUrl': 'Go to my own page',
   'settings.blockPageUrlPlaceholder': 'https://example.com/focus',
   'settings.blockPageUrlInvalid': 'Enter a full http(s) address.',
+  'settings.blockPageUrlBlocked':
+    '⚠ This address is on your blocklist, so ArYS shows its own block page instead (no redirect loop).',
   'settings.blockTitle': 'Title',
   'settings.blockTitlePlaceholder': 'This site is blocked',
   'settings.message': 'Message',

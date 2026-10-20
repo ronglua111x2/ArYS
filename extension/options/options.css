@@ -240,6 +240,35 @@ main {
   margin: 0 0 0.5rem;
 }
 
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0 0 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--warn);
+  color: var(--text);
+}
+
+.warnings p {
+  margin: 0;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-strong);
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+.warn-badge {
+  color: var(--warn);
+  cursor: help;
+}
+
 .inline {
   display: flex;
   flex-wrap: wrap;

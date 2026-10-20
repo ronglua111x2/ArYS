@@ -12,7 +12,9 @@ import { normalizeInternal } from './lib/internal.js';
 import { getUserEntries, getUserRules, reconcile } from './lib/user-rules.js';
 
 const BLOCK_PAGE = chrome.runtime.getURL('blocked/blocked.html');
-const SELF = normalizeInternal(chrome.runtime.getURL(''));
+// The block page itself is never blocked (that would loop). Other ArYS pages can be, if the user
+// adds such an entry; the options page warns before that happens.
+const SELF_BLOCK_PAGE = normalizeInternal(BLOCK_PAGE);
 const WEB = { url: [{ schemes: ['http', 'https'] }] };
 const BROWSER = { url: [{ schemes: ['edge', 'chrome', 'extension', 'chrome-extension'] }] };
 
@@ -22,7 +24,7 @@ const getMatcher = () => (matcher ??= getUserEntries().then(compileMatcher));
 
 function check(details) {
   if (details.frameId !== 0) return;
-  if (normalizeInternal(details.url).startsWith(SELF)) return; // never block ArYS itself
+  if (normalizeInternal(details.url).startsWith(SELF_BLOCK_PAGE)) return;
   getMatcher().then((m) => {
     if (matchUrl(details.url, m)) {
       chrome.tabs.update(details.tabId, { url: BLOCK_PAGE }).catch(() => {});

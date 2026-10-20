@@ -64,6 +64,14 @@ export default {
   'add.tooMany': '{n} dòng – tối đa {max} mỗi lần.',
   'add.badgeSkipped': 'bỏ qua',
   'add.badgeRejected': 'từ chối',
+  'warn.blockPage':
+    '{entries} chặn luôn trang chặn tùy chỉnh của bạn, sẽ gây vòng lặp. ArYS sẽ hiện trang chặn mặc định thay thế.',
+  'warn.extensionsPage':
+    '{entries} chặn trang tiện ích của Edge, nơi quản lý và gỡ ArYS. Hãy đánh dấu trang cài đặt này trước (Ctrl+D) để luôn mở được ArYS.',
+  'warn.optionsPage':
+    '{entries} chặn chính trang cài đặt này. Khi đóng trang, bạn không mở lại ArYS để xóa mục đó được nữa; chỉ gỡ cài đặt ArYS mới hoàn tác.',
+  'warn.copyLink': 'Sao chép liên kết cài đặt',
+  'warn.linkCopied': 'Đã sao chép',
   'add.lockedNote': 'Nuclear đang bật: mục thêm lúc này không xóa được cho tới khi hết hạn.',
   'add.submit': 'Thêm {n}',
   'add.submitEmpty': 'Thêm',
@@ -89,6 +97,8 @@ export default {
   'settings.blockPageUrl': 'Chuyển tới trang của tôi',
   'settings.blockPageUrlPlaceholder': 'https://example.com/tap-trung',
   'settings.blockPageUrlInvalid': 'Nhập địa chỉ http(s) đầy đủ.',
+  'settings.blockPageUrlBlocked':
+    '⚠ Địa chỉ này nằm trong danh sách chặn nên ArYS hiện trang chặn mặc định thay thế (tránh vòng lặp).',
   'settings.blockTitle': 'Tiêu đề',
   'settings.blockTitlePlaceholder': 'Trang này đã bị chặn',
   'settings.message': 'Lời nhắn',

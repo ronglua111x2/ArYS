@@ -144,6 +144,12 @@
               hidden
               data-i18n="settings.blockPageUrlInvalid"
             ></p>
+            <p
+              id="block-page-url-blocked"
+              class="warn small"
+              hidden
+              data-i18n="settings.blockPageUrlBlocked"
+            ></p>
 
             <div id="block-custom" class="block-custom">
               <div class="fields">
@@ -311,6 +317,7 @@
         <p class="help muted small" data-i18n="add.help"></p>
         <p id="summary" class="summary" aria-live="polite"></p>
         <ul id="preview" class="preview"></ul>
+        <div id="add-warnings" class="warnings small" hidden></div>
         <p id="add-locked" class="warn small" hidden data-i18n="add.lockedNote"></p>
         <div class="dialog-actions">
           <button type="button" id="cancel" class="ghost" data-i18n="common.cancel">Cancel</button>

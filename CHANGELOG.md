@@ -17,5 +17,6 @@ First public version.
 - Options page with sidebar: Blocked sites, Settings, About.
 - Import and export of the list.
 - Custom block page: title, message, accent colour and image, or your own address.
+- Warnings (never refusals) when an entry would block the custom block page (ArYS then shows its own page, so there is no loop), Edge's extensions page or the ArYS settings page.
 - Welcome page with terms of use and privacy policy on first install.
 - English and Vietnamese; light, dark and system themes.

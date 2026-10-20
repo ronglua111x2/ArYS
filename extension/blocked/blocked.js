@@ -1,6 +1,6 @@
 import { initPageI18n } from '../lib/i18n.js';
 import { ACCENTS, loadSettings } from '../lib/settings.js';
-import { compileMatcher, matchUrl } from '../lib/matcher.js';
+import { blockPageIsBlocked } from '../lib/warnings.js';
 import { getUserEntries } from '../lib/user-rules.js';
 import { formatCountdown, isActive, isLocked, isPermanent } from '../lib/nuclear.js';
 import { startTicker } from '../ui/countdown.js';
@@ -10,8 +10,7 @@ const settings = await loadSettings();
 
 // Custom block page, unless it is itself blocked (that would loop back here forever).
 if (settings.blockPage === 'url' && settings.blockPageUrl) {
-  const matcher = compileMatcher(await getUserEntries());
-  if (!matchUrl(settings.blockPageUrl, matcher)) {
+  if (!blockPageIsBlocked(settings.blockPageUrl, await getUserEntries())) {
     location.replace(settings.blockPageUrl);
     await new Promise(() => {}); // stop here; the page is being replaced
   }
