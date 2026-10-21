@@ -83,6 +83,7 @@ function showView(name) {
     btn.classList.toggle('active', btn.dataset.view === name);
   }
   for (const view of document.querySelectorAll('.view')) view.hidden = view.id !== `view-${name}`;
+  hideToast();
 }
 for (const btn of document.querySelectorAll('.nav-item')) {
   btn.addEventListener('click', () => showView(btn.dataset.view));
@@ -214,8 +215,8 @@ function renderList() {
   );
 }
 
-/** Entry text for messages: at most 10 characters. */
-const short = (entry) => (entry.length > 10 ? `${entry.slice(0, 10)}…` : entry);
+/** Entry text for messages: at most 30 characters. */
+const short = (entry) => (entry.length > 30 ? `${entry.slice(0, 30)}…` : entry);
 
 // Removing asks first, unless "don't ask again" was ticked. That choice lives only in this page:
 // reloading or reopening the settings asks again.
@@ -675,6 +676,12 @@ $('nuclear-confirm-form').addEventListener('submit', async (e) => {
 
 // ---------- toast ------------------------------------------------------------------------------
 let toastTimer;
+function hideToast() {
+  clearTimeout(toastTimer);
+  $('toast').hidden = true;
+}
+// Leaving the page (another browser tab) or another section clears it at once.
+document.addEventListener('visibilitychange', () => document.hidden && hideToast());
 /** Short message at the bottom; with an action (e.g. Undo) it stays longer. */
 function toast(message, action = null) {
   const el = $('toast');
@@ -690,7 +697,7 @@ function toast(message, action = null) {
     : null;
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (el.hidden = true), action ? 10000 : 3500);
+  toastTimer = setTimeout(() => (el.hidden = true), action ? 7000 : 3500);
 }
 
 // ---------- start ------------------------------------------------------------------------------
