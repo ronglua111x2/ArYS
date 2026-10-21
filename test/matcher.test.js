@@ -74,3 +74,36 @@ describe('internal helpers', () => {
     ]);
   });
 });
+
+describe('blockOpenBrowserPages', () => {
+  it('blocks open browser-page tabs found through webNavigation, never ArYS itself', async () => {
+    const urls = {
+      1: 'edge://settings/privacy',
+      2: 'chrome://settings/privacy/cookies',
+      3: 'edge://settings/appearance',
+      4: 'https://site.test/',
+      5: 'chrome-extension://self/options/options.html',
+      6: null, // discarded tab: no frames
+    };
+    const updated = [];
+    globalThis.chrome = {
+      tabs: {
+        query: async () => Object.keys(urls).map((id) => ({ id: Number(id) })),
+        update: async (id, { url }) => updated.push([id, url]),
+      },
+      webNavigation: {
+        getAllFrames: async ({ tabId }) =>
+          urls[tabId] ? [{ frameId: 0, url: urls[tabId] }] : null,
+      },
+    };
+    const { blockOpenBrowserPages } = await import('../extension/lib/matcher.js');
+    const n = await blockOpenBrowserPages(
+      ['edge://settings/privacy', 'extension://self'],
+      'chrome-extension://self/blocked/blocked.html',
+      ['chrome-extension://self/'],
+    );
+    expect(n).toBe(2);
+    expect(updated.map(([id]) => id).sort()).toEqual([1, 2]);
+    delete globalThis.chrome;
+  });
+});

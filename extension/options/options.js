@@ -7,7 +7,7 @@ import {
   removeUserEntries,
 } from '../lib/user-rules.js';
 import { describeEntries, entryKind, isDnrCondition, REGEX_PREFIX } from '../lib/rules.js';
-import { reblockOpenTabs } from '../lib/matcher.js';
+import { blockOpenBrowserPages, reblockOpenTabs } from '../lib/matcher.js';
 import { initPageI18n } from '../lib/i18n.js';
 import {
   loadSettings,
@@ -33,6 +33,7 @@ import { startTicker } from '../ui/countdown.js';
 const $ = (id) => document.getElementById(id);
 const VERSION = chrome.runtime.getManifest().version;
 const OPTIONS_URL = chrome.runtime.getURL('options/options.html');
+const BLOCK_PAGE_URL = chrome.runtime.getURL('blocked/blocked.html');
 
 // First run: the terms must be accepted before anything else (welcome/welcome.html).
 if (!(await termsAccepted())) {
@@ -135,6 +136,16 @@ function computeRisk() {
   for (const [kind, list] of Object.entries(riskyEntries(entries, riskTargets()))) {
     for (const e of list) risk.set(e, [...(risk.get(e) ?? []), RISK_KEYS[kind]]);
   }
+}
+
+/** Block tabs that were open before their entry existed: web pages reload, browser pages redirect. */
+async function reblockAll() {
+  const internal = userConditions.filter((c) => c.internal).map((c) => c.internal);
+  const [web, browser] = await Promise.all([
+    reblockOpenTabs(userConditions.filter(isDnrCondition)),
+    blockOpenBrowserPages(internal, BLOCK_PAGE_URL, [chrome.runtime.getURL('')]),
+  ]);
+  return web + browser;
 }
 
 async function load() {
@@ -251,7 +262,7 @@ async function restoreEntry(entry) {
     const p = planAdditions(entry, '', userConditions);
     if (p.add.length) await addUserRules(p.add);
     await load();
-    await reblockOpenTabs(userConditions.filter(isDnrCondition));
+    await reblockAll();
     toast(t('toast.restored', { entry: short(entry) }));
   } catch {
     toast(t('toast.failed'));
@@ -425,7 +436,7 @@ $('add-form').addEventListener('submit', async (e) => {
     await addUserRules(plan.add);
     dialog.close();
     await load();
-    const n = await reblockOpenTabs(userConditions.filter(isDnrCondition));
+    const n = await reblockAll();
     toast(t('toast.added', { n: count }) + (n ? ` ${t('toast.reblocked', { n })}` : ''));
   } catch (err) {
     $('summary').className = 'summary bad';
@@ -709,5 +720,5 @@ await reconcile().catch(() => {}); // repair the list from its three copies befo
 await load();
 renderAll();
 // Tabs opened before a rule existed keep showing the page until reloaded; block them now.
-const reblocked = await reblockOpenTabs(userConditions.filter(isDnrCondition));
+const reblocked = await reblockAll();
 if (reblocked) toast(t('toast.reblocked', { n: reblocked }));

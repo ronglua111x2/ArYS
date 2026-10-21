@@ -19,6 +19,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Block page: only the title and the message can be customised, and each can be turned off (both off shows just the logo). The link back to ArYS moved to a corner.
 - Sidebar icons are drawn as SVG so labels line up; radio buttons and checkboxes line up with their labels.
 
+### Fixed
+
+- Tabs already showing a browser page (edge://…) are blocked as soon as that page is added, without a reload.
+
 ### Removed
 
 - Accent colour and image for the block page.
