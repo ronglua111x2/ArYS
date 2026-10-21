@@ -9,6 +9,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Added
 
 - The blocked list starts hidden every time the settings page opens; “Show entries” reveals it.
+- Entry kinds are colour-coded: sites, patterns, browser pages (and regex).
 - Removing an entry asks for confirmation (can be skipped until the page is closed), and the message names the entry with an Undo button.
 
 ### Changed

@@ -13,6 +13,10 @@
   --accent-text: #ffffff;
   --danger: #c62828;
   --ok: #157a3c;
+  --kind-site: #1d4ed8;
+  --kind-pattern: #7c3aed;
+  --kind-system: #b45309;
+  --kind-regex: #be185d;
   --warn: #b45309;
   --shadow: 0 1px 2px rgb(16 24 40 / 0.06), 0 6px 24px rgb(16 24 40 / 0.06);
   --radius: 10px;
@@ -35,6 +39,10 @@
     --accent-text: #04201d;
     --danger: #f87171;
     --ok: #4ade80;
+    --kind-site: #93c5fd;
+    --kind-pattern: #c4b5fd;
+    --kind-system: #fcd34d;
+    --kind-regex: #f9a8d4;
     --warn: #fbbf24;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 28px rgb(0 0 0 / 0.35);
   }
@@ -54,6 +62,10 @@
   --accent-text: #04201d;
   --danger: #f87171;
   --ok: #4ade80;
+  --kind-site: #93c5fd;
+  --kind-pattern: #c4b5fd;
+  --kind-system: #fcd34d;
+  --kind-regex: #f9a8d4;
   --warn: #fbbf24;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 28px rgb(0 0 0 / 0.35);
 }
@@ -206,6 +218,26 @@ label.check input {
   background: var(--surface-2);
   color: var(--muted);
   white-space: nowrap;
+}
+
+.kind-site,
+.kind-pattern,
+.kind-system,
+.kind-regex {
+  color: var(--kind);
+  background: color-mix(in srgb, var(--kind) 15%, transparent);
+}
+.kind-site {
+  --kind: var(--kind-site);
+}
+.kind-pattern {
+  --kind: var(--kind-pattern);
+}
+.kind-system {
+  --kind: var(--kind-system);
+}
+.kind-regex {
+  --kind: var(--kind-regex);
 }
 
 .toast {

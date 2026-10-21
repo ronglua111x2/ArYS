@@ -180,7 +180,7 @@ function renderList() {
       text.className = 'entry';
       text.textContent = i.kind === 'regex' ? i.entry.slice(REGEX_PREFIX.length) : i.entry;
       const kind = document.createElement('span');
-      kind.className = 'badge';
+      kind.className = `badge kind-${i.kind}`;
       kind.textContent = t(`kind.${i.kind}`);
       const remove = document.createElement('button');
       remove.type = 'button';
@@ -305,14 +305,14 @@ let plan = null;
 let lineLimit = ADD_MAX;
 let evaluateTimer;
 
-function previewItem(text, badge, cls) {
+function previewItem(text, badge, cls, badgeClass = '') {
   const li = document.createElement('li');
   li.className = cls;
   const e = document.createElement('span');
   e.className = 'entry';
   e.textContent = text;
   const b = document.createElement('span');
-  b.className = 'badge';
+  b.className = `badge ${badgeClass}`.trim();
   b.textContent = badge;
   li.append(e, b);
   return li;
@@ -346,7 +346,10 @@ function evaluate() {
       .filter(Boolean)
       .join(' · ');
     preview.append(
-      ...p.add.map((a) => previewItem(a.input, t(`kind.${entryKind(a.input)}`), 'ok')),
+      ...p.add.map((a) => {
+        const kind = entryKind(a.input);
+        return previewItem(a.input, t(`kind.${kind}`), 'ok', `kind-${kind}`);
+      }),
       ...p.rejected.map((r) =>
         previewItem(`${r.input} — ${reasonText(r.reason)}`, t('add.badgeRejected'), 'bad'),
       ),
