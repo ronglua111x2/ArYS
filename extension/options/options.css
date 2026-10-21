@@ -450,6 +450,13 @@ dialog h2 {
   font-size: 1.15rem;
 }
 
+.remove-entry {
+  margin: 0 0 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
 .help {
   margin: 0.5rem 0 0;
 }

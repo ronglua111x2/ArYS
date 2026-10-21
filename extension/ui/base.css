@@ -220,4 +220,21 @@ label.check input {
   font-size: 0.9rem;
   box-shadow: var(--shadow);
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  max-width: calc(100vw - 2rem);
+}
+
+.toast-action {
+  padding: 0.15rem 0.6rem;
+  border-color: transparent;
+  background: transparent;
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.toast-action:hover {
+  border-color: var(--bg);
 }

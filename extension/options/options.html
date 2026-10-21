@@ -342,7 +342,27 @@
       </form>
     </dialog>
 
-    <div id="toast" class="toast" role="status" hidden></div>
+    <dialog id="remove-dialog">
+      <form id="remove-form" method="dialog">
+        <h2 data-i18n="remove.title">Remove this entry?</h2>
+        <p id="remove-entry" class="remove-entry"></p>
+        <label class="check">
+          <input type="checkbox" id="remove-skip" />
+          <span data-i18n="remove.skip">Don’t ask again until this page is closed</span>
+        </label>
+        <div class="dialog-actions">
+          <button type="button" id="remove-cancel" class="ghost" data-i18n="common.cancel">
+            Cancel
+          </button>
+          <button type="submit" class="primary" data-i18n="remove.confirm">Remove</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" hidden>
+      <span id="toast-text"></span>
+      <button type="button" id="toast-action" class="toast-action" hidden></button>
+    </div>
     <script type="module" src="options.js"></script>
   </body>
 </html>

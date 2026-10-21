@@ -83,7 +83,12 @@ export default {
   'import.errorFormat': 'Unsupported file. Use a text file with one entry per line.',
 
   'toast.added': 'Added {n}.',
-  'toast.removed': 'Removed {n}.',
+  'toast.removedEntry': 'Removed “{entry}”.',
+  'toast.restored': 'Restored “{entry}”.',
+  'toast.undo': 'Undo',
+  'remove.title': 'Remove this entry?',
+  'remove.skip': 'Don’t ask again until this page is closed',
+  'remove.confirm': 'Remove',
   'toast.reblocked': 'Blocked {n} open tab(s).',
   'toast.exported': 'Exported {n} entries.',
   'toast.exportEmpty': 'Nothing to export yet.',

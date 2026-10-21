@@ -189,7 +189,7 @@ function renderList() {
       remove.disabled = isLockedNow;
       remove.title = t(isLockedNow ? 'blocked.removeLocked' : 'blocked.remove');
       remove.setAttribute('aria-label', `${t('blocked.remove')}: ${text.textContent}`);
-      remove.addEventListener('click', () => removeEntries([i.entry]));
+      remove.addEventListener('click', () => removeEntry(i.entry));
       const warnings = risk.get(i.entry);
       if (warnings) {
         const w = document.createElement('span');
@@ -203,13 +203,58 @@ function renderList() {
   );
 }
 
-async function removeEntries(list) {
+/** Entry text for messages: at most 10 characters. */
+const short = (entry) => (entry.length > 10 ? `${entry.slice(0, 10)}…` : entry);
+
+// Removing asks first, unless "don't ask again" was ticked. That choice lives only in this page:
+// reloading or reopening the settings asks again.
+let skipRemoveConfirm = false;
+let pendingRemoval = null;
+const removeDialog = $('remove-dialog');
+
+function removeEntry(entry) {
+  if (skipRemoveConfirm) return removeNow(entry);
+  pendingRemoval = entry;
+  $('remove-form').reset();
+  $('remove-entry').textContent = entry.startsWith(REGEX_PREFIX)
+    ? entry.slice(REGEX_PREFIX.length)
+    : entry;
+  removeDialog.showModal();
+}
+$('remove-cancel').addEventListener('click', () => removeDialog.close());
+$('remove-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if ($('remove-skip').checked) skipRemoveConfirm = true;
+  removeDialog.close();
+  if (pendingRemoval) removeNow(pendingRemoval);
+  pendingRemoval = null;
+});
+
+async function removeNow(entry) {
   try {
-    const n = await removeUserEntries(list);
+    const n = await removeUserEntries([entry]);
     await load();
-    if (n) toast(t('toast.removed', { n }));
+    if (n) {
+      toast(t('toast.removedEntry', { entry: short(entry) }), {
+        label: t('toast.undo'),
+        run: () => restoreEntry(entry),
+      });
+    }
   } catch (err) {
     toast(t(err.message === 'locked' ? 'blocked.removeLocked' : 'toast.failed'));
+  }
+}
+
+/** Undo a removal: the entry goes back through the normal add path. */
+async function restoreEntry(entry) {
+  try {
+    const p = planAdditions(entry, '', userConditions);
+    if (p.add.length) await addUserRules(p.add);
+    await load();
+    await reblockOpenTabs(userConditions.filter(isDnrCondition));
+    toast(t('toast.restored', { entry: short(entry) }));
+  } catch {
+    toast(t('toast.failed'));
   }
 }
 
@@ -616,12 +661,22 @@ $('nuclear-confirm-form').addEventListener('submit', async (e) => {
 
 // ---------- toast ------------------------------------------------------------------------------
 let toastTimer;
-function toast(message) {
+/** Short message at the bottom; with an action (e.g. Undo) it stays longer. */
+function toast(message, action = null) {
   const el = $('toast');
-  el.textContent = message;
+  const button = $('toast-action');
+  $('toast-text').textContent = message;
+  button.hidden = !action;
+  button.textContent = action?.label ?? '';
+  button.onclick = action
+    ? () => {
+        el.hidden = true;
+        action.run();
+      }
+    : null;
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (el.hidden = true), 3500);
+  toastTimer = setTimeout(() => (el.hidden = true), action ? 10000 : 3500);
 }
 
 // ---------- start ------------------------------------------------------------------------------

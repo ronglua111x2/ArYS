@@ -82,7 +82,12 @@ export default {
   'import.errorFormat': 'Tệp không được hỗ trợ. Dùng tệp văn bản, mỗi dòng một mục.',
 
   'toast.added': 'Đã thêm {n}.',
-  'toast.removed': 'Đã xóa {n}.',
+  'toast.removedEntry': 'Đã xóa “{entry}”.',
+  'toast.restored': 'Đã khôi phục “{entry}”.',
+  'toast.undo': 'Hoàn tác',
+  'remove.title': 'Xóa mục này?',
+  'remove.skip': 'Không hỏi lại cho tới khi đóng trang này',
+  'remove.confirm': 'Xóa',
   'toast.reblocked': 'Đã chặn {n} tab đang mở.',
   'toast.exported': 'Đã xuất {n} mục.',
   'toast.exportEmpty': 'Chưa có gì để xuất.',
