@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { normalizeSettings, safeRedirectUrl, MESSAGE_MAX } from '../extension/lib/settings.js';
-import { buildExport, parseImport, EXPORT_FORMAT } from '../extension/lib/transfer.js';
+import { buildExport, exportFileName, parseImport } from '../extension/lib/transfer.js';
 
 describe('settings', () => {
   it('only accepts absolute http(s) block pages', () => {
@@ -17,8 +17,8 @@ describe('settings', () => {
       blockPageUrl: '',
       blockTitle: '',
       blockMessage: '',
-      blockAccent: 'teal',
-      blockImage: '',
+      showTitle: true,
+      showMessage: true,
       nuclear: { enabled: false, startsAt: 0, unlockAt: 0 },
     });
     const s = normalizeSettings({
@@ -31,20 +31,34 @@ describe('settings', () => {
     expect(s.language).toBe('auto');
     expect(s.blockPage).toBe('default'); // no valid URL -> default page
     expect(s.blockMessage).toHaveLength(MESSAGE_MAX);
-    expect(normalizeSettings({ blockImage: 'https://x.test/a.png' }).blockImage).toBe('');
-    expect(normalizeSettings({ blockImage: 'data:image/png;base64,AAAA' }).blockImage).toBe(
-      'data:image/png;base64,AAAA',
-    );
-    expect(normalizeSettings({ blockAccent: '#ff0000' }).blockAccent).toBe('teal');
     expect(s).not.toHaveProperty('tracking');
+  });
+
+  it('shows title and message unless turned off; drops settings of older versions', () => {
+    const off = normalizeSettings({ showTitle: false, showMessage: false });
+    expect([off.showTitle, off.showMessage]).toEqual([false, false]);
+    expect(normalizeSettings({ showTitle: 'no' }).showTitle).toBe(true);
+    const old = normalizeSettings({
+      blockAccent: 'rose',
+      blockImage: 'data:image/png;base64,AAAA',
+    });
+    expect(old).not.toHaveProperty('blockAccent');
+    expect(old).not.toHaveProperty('blockImage');
   });
 });
 
 describe('export / import', () => {
-  it('round-trips an export', () => {
-    const file = buildExport(['a.test', '*keyw'], { version: '1.0.0', now: new Date(0) });
-    expect(JSON.parse(file).format).toBe(EXPORT_FORMAT);
-    expect(parseImport(file)).toEqual({ entries: ['a.test', '*keyw'] });
+  it('exports plain text, one entry per line, and reads it back', () => {
+    const file = buildExport(['a.test', '*keyw', 'edge://settings/privacy']);
+    expect(file).toBe('a.test\n*keyw\nedge://settings/privacy\n');
+    expect(parseImport(file)).toEqual({ entries: ['a.test', '*keyw', 'edge://settings/privacy'] });
+    expect(buildExport([])).toBe('');
+    expect(exportFileName(new Date(0))).toBe('arys-blocklist-1970-01-01.txt');
+  });
+
+  it('still reads the JSON export of ArYS 0.3.0', () => {
+    const legacy = JSON.stringify({ format: 'arys-blocklist', entries: ['a.test', '*keyw'] });
+    expect(parseImport(legacy)).toEqual({ entries: ['a.test', '*keyw'] });
   });
 
   it('accepts a JSON array and plain text with comments', () => {

@@ -20,13 +20,26 @@
         </div>
         <nav aria-label="Sections" data-i18n-aria-label="nav.label">
           <button type="button" class="nav-item active" data-view="blocked">
-            <span aria-hidden="true">⛔</span><span data-i18n="nav.blocked">Blocked sites</span>
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M5.6 5.6l12.8 12.8" />
+            </svg>
+            <span data-i18n="nav.blocked">Blocked sites</span>
           </button>
           <button type="button" class="nav-item" data-view="settings">
-            <span aria-hidden="true">⚙</span><span data-i18n="nav.settings">Settings</span>
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />
+              <circle cx="16" cy="7" r="2" />
+              <circle cx="10" cy="17" r="2" />
+            </svg>
+            <span data-i18n="nav.settings">Settings</span>
           </button>
           <button type="button" class="nav-item" data-view="about">
-            <span aria-hidden="true">ℹ</span><span data-i18n="nav.about">About</span>
+            <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 11v5M12 8v.01" />
+            </svg>
+            <span data-i18n="nav.about">About</span>
           </button>
         </nav>
         <div class="sidebar-footer">
@@ -89,7 +102,7 @@
           <input
             id="import-file"
             type="file"
-            accept=".json,.txt,text/plain,application/json"
+            accept=".txt,.json,text/plain,application/json"
             hidden
           />
         </section>
@@ -101,23 +114,15 @@
             <span id="saved" class="saved small" hidden data-i18n="toast.saved">Saved</span>
           </header>
 
-          <div class="card setting two-col">
-            <div>
-              <label for="language" data-i18n="settings.language">Language</label>
-              <select id="language">
-                <option value="auto" data-i18n="settings.languageAuto">Same as browser</option>
-                <option value="en">English</option>
-                <option value="vi">Tiếng Việt</option>
-              </select>
-            </div>
-            <div>
-              <label for="theme" data-i18n="settings.theme">Theme</label>
-              <select id="theme">
-                <option value="system" data-i18n="theme.system">System</option>
-                <option value="light" data-i18n="theme.light">Light</option>
-                <option value="dark" data-i18n="theme.dark">Dark</option>
-              </select>
-            </div>
+          <div class="card setting">
+            <label for="language" class="setting-title" data-i18n="settings.language">
+              Language
+            </label>
+            <select id="language">
+              <option value="auto" data-i18n="settings.languageAuto">Same as browser</option>
+              <option value="en">English</option>
+              <option value="vi">Tiếng Việt</option>
+            </select>
           </div>
 
           <!-- Block page -->
@@ -153,47 +158,30 @@
 
             <div id="block-custom" class="block-custom">
               <div class="fields">
-                <label for="block-title" data-i18n="settings.blockTitle">Title</label>
+                <label class="check">
+                  <input type="checkbox" id="show-title" />
+                  <span data-i18n="settings.showTitle">Show a title</span>
+                </label>
                 <input
                   id="block-title"
                   type="text"
                   maxlength="60"
+                  data-i18n-aria-label="settings.blockTitle"
                   data-i18n-placeholder="settings.blockTitlePlaceholder"
                 />
 
-                <label for="block-message" data-i18n="settings.message">Message</label>
+                <label class="check">
+                  <input type="checkbox" id="show-message" />
+                  <span data-i18n="settings.showMessage">Show a message</span>
+                </label>
                 <textarea
                   id="block-message"
                   rows="3"
                   maxlength="280"
+                  data-i18n-aria-label="settings.message"
                   data-i18n-placeholder="settings.messagePlaceholder"
                 ></textarea>
                 <span id="message-counter" class="muted small counter"></span>
-
-                <span class="field-label" data-i18n="settings.accent">Accent colour</span>
-                <div id="accents" class="swatches" role="radiogroup"></div>
-
-                <span class="field-label" data-i18n="settings.image">Image</span>
-                <div class="inline">
-                  <button type="button" id="image-choose" data-i18n="settings.imageChoose">
-                    Choose image…
-                  </button>
-                  <button
-                    type="button"
-                    id="image-remove"
-                    class="ghost"
-                    data-i18n="settings.imageRemove"
-                  >
-                    Remove image
-                  </button>
-                  <input
-                    id="image-file"
-                    type="file"
-                    accept="image/png,image/jpeg,image/webp,image/gif"
-                    hidden
-                  />
-                </div>
-                <p id="image-error" class="error small" hidden data-i18n="settings.imageTooBig"></p>
 
                 <button
                   type="button"
@@ -208,7 +196,7 @@
               <div class="preview-wrap">
                 <span class="field-label" data-i18n="settings.preview">Preview</span>
                 <div id="block-preview" class="block-preview">
-                  <img id="pv-image" alt="" hidden />
+                  <img src="../icons/icon-128.png" alt="" width="56" height="56" />
                   <strong id="pv-title"></strong>
                   <p id="pv-message"></p>
                 </div>

@@ -10,10 +10,8 @@ import { describeEntries, entryKind, isDnrCondition, REGEX_PREFIX } from '../lib
 import { reblockOpenTabs } from '../lib/matcher.js';
 import { initPageI18n } from '../lib/i18n.js';
 import {
-  ACCENTS,
   loadSettings,
   MESSAGE_MAX,
-  safeImage,
   safeRedirectUrl,
   saveSettings,
   SETTINGS_KEY,
@@ -108,12 +106,10 @@ function applyTheme(theme) {
   if (theme === 'system') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = theme;
   $('theme-toggle').textContent = `${THEME_ICON[theme]} ${t(`theme.${theme}`)}`;
-  $('theme').value = theme;
 }
 $('theme-toggle').addEventListener('click', () => {
   applyTheme(THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length]);
 });
-$('theme').addEventListener('change', (e) => applyTheme(e.target.value));
 
 // ---------- blocked list -----------------------------------------------------------------------
 let entries = [];
@@ -221,7 +217,7 @@ for (const btn of document.querySelectorAll('.filter')) {
 // ---------- export / import --------------------------------------------------------------------
 $('export').addEventListener('click', () => {
   if (!entries.length) return toast(t('toast.exportEmpty'));
-  const blob = new Blob([buildExport(entries, { version: VERSION })], { type: 'application/json' });
+  const blob = new Blob([buildExport(entries)], { type: 'text/plain' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = exportFileName();
@@ -422,10 +418,10 @@ function renderBlockPage() {
   $('block-custom').classList.toggle('dimmed', settings.blockPage === 'url');
   setValue($('block-title'), settings.blockTitle);
   setValue($('block-message'), settings.blockMessage);
-  for (const s of document.querySelectorAll('.swatch')) {
-    s.setAttribute('aria-checked', String(s.dataset.accent === settings.blockAccent));
-  }
-  $('image-remove').hidden = !settings.blockImage;
+  $('show-title').checked = settings.showTitle;
+  $('show-message').checked = settings.showMessage;
+  $('block-title').disabled = !settings.showTitle;
+  $('block-message').disabled = !settings.showMessage;
   renderUrlWarning();
   renderPreview();
 }
@@ -441,28 +437,10 @@ function renderPreview() {
     n: $('block-message').value.length,
     max: MESSAGE_MAX,
   });
-  $('block-preview').style.setProperty('--pv-accent', ACCENTS[settings.blockAccent]);
-  $('pv-image').src = settings.blockImage || '../icons/icon-128.png';
-  $('pv-image').hidden = false;
+  $('pv-title').hidden = !$('show-title').checked;
+  $('pv-message').hidden = !$('show-message').checked;
   $('pv-title').textContent = $('block-title').value.trim() || t('blockedPage.title');
   $('pv-message').textContent = $('block-message').value.trim() || t('blockedPage.default');
-}
-
-function buildSwatches() {
-  $('accents').replaceChildren(
-    ...Object.entries(ACCENTS).map(([name, color]) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'swatch';
-      b.dataset.accent = name;
-      b.style.setProperty('--swatch', color);
-      b.setAttribute('role', 'radio');
-      b.setAttribute('aria-label', name);
-      b.title = name;
-      b.addEventListener('click', () => saveOrWarn({ blockAccent: name }).then(renderBlockPage));
-      return b;
-    }),
-  );
 }
 
 function onBlockPageChange() {
@@ -494,41 +472,21 @@ for (const [id, key] of [
   $(id).addEventListener('change', flushTyping);
 }
 
-// Images are shrunk in the page (canvas) and stored inline: never uploaded, never a remote URL.
-const IMAGE_SIDE = 480;
-async function shrinkImage(file) {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, IMAGE_SIDE / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
-  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close();
-  for (const quality of [0.85, 0.7, 0.5]) {
-    const url = safeImage(canvas.toDataURL('image/webp', quality));
-    if (url) return url;
-  }
-  return '';
+for (const [id, key, field] of [
+  ['show-title', 'showTitle', 'block-title'],
+  ['show-message', 'showMessage', 'block-message'],
+]) {
+  $(id).addEventListener('change', () => {
+    $(field).disabled = !$(id).checked;
+    renderPreview();
+    saveOrWarn({ [key]: $(id).checked });
+  });
 }
 
-$('image-choose').addEventListener('click', () => $('image-file').click());
-$('image-file').addEventListener('change', async (e) => {
-  const file = e.target.files?.[0];
-  e.target.value = '';
-  if (!file) return;
-  const url = await shrinkImage(file).catch(() => '');
-  $('image-error').hidden = Boolean(url);
-  if (url) saveOrWarn({ blockImage: url }).then(renderBlockPage);
-});
-$('image-remove').addEventListener('click', () => {
-  $('image-error').hidden = true;
-  saveOrWarn({ blockImage: '' }).then(renderBlockPage);
-});
 $('reset-block').addEventListener('click', async () => {
-  $('image-error').hidden = true;
   $('block-title').value = '';
   $('block-message').value = '';
-  await saveOrWarn({ blockTitle: '', blockMessage: '', blockAccent: 'teal', blockImage: '' });
+  await saveOrWarn({ blockTitle: '', blockMessage: '', showTitle: true, showMessage: true });
   renderBlockPage();
 });
 
@@ -674,7 +632,6 @@ chrome.storage.onChanged.addListener(async (changes, area) => {
   }
 });
 
-buildSwatches();
 applyTheme(currentTheme());
 showView('blocked');
 await reconcile().catch(() => {}); // repair the list from its three copies before showing it

@@ -137,6 +137,13 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -184,7 +191,12 @@ label.check {
 }
 
 label.check input {
-  margin-top: 0.25rem;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  font: inherit; /* so 1lh below is the label's line height, not the control's */
+  margin: calc((1lh - 1rem) / 2) 0 0;
+  accent-color: var(--accent);
 }
 
 .badge {

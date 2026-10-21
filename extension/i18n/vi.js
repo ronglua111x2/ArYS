@@ -1,7 +1,7 @@
 // Chuỗi giao diện tiếng Việt. Phải có đủ mọi khóa của en.js (test/i18n.test.js kiểm tra).
 export default {
   'app.name': 'ArYS',
-  'app.slogan': 'Tập trung vào điều quan trọng.',
+  'app.slogan': 'Are you sure?',
 
   'nav.blocked': 'Trang bị chặn',
   'nav.settings': 'Cài đặt',
@@ -77,8 +77,7 @@ export default {
   'add.submitEmpty': 'Thêm',
 
   'import.errorEmpty': 'Tệp không có mục nào.',
-  'import.errorFormat':
-    'Tệp không được hỗ trợ. Dùng tệp xuất từ ArYS (.json) hoặc tệp văn bản mỗi dòng một mục.',
+  'import.errorFormat': 'Tệp không được hỗ trợ. Dùng tệp văn bản, mỗi dòng một mục.',
 
   'toast.added': 'Đã thêm {n}.',
   'toast.removed': 'Đã xóa {n}.',
@@ -91,7 +90,6 @@ export default {
   'settings.title': 'Cài đặt',
   'settings.language': 'Ngôn ngữ',
   'settings.languageAuto': 'Theo trình duyệt',
-  'settings.theme': 'Giao diện',
   'settings.blockPage': 'Khi một trang bị chặn',
   'settings.blockPageDefault': 'Hiện trang chặn của ArYS',
   'settings.blockPageUrl': 'Chuyển tới trang của tôi',
@@ -104,11 +102,8 @@ export default {
   'settings.message': 'Lời nhắn',
   'settings.messagePlaceholder': 'Để trống để dùng lời nhắn mặc định',
   'settings.messageCounter': '{n}/{max}',
-  'settings.accent': 'Màu nhấn',
-  'settings.image': 'Hình ảnh',
-  'settings.imageChoose': 'Chọn ảnh…',
-  'settings.imageRemove': 'Bỏ ảnh',
-  'settings.imageTooBig': 'Ảnh quá lớn kể cả sau khi thu nhỏ.',
+  'settings.showTitle': 'Hiện tiêu đề',
+  'settings.showMessage': 'Hiện lời nhắn',
   'settings.preview': 'Xem trước',
   'settings.resetBlockPage': 'Đặt lại mặc định',
   'settings.nuclear': 'Chế độ Nuclear',
@@ -178,8 +173,7 @@ export default {
   'legal.privacy.p5': 'Có câu hỏi? Mở một issue trên trang GitHub của dự án.',
 
   'blockedPage.title': 'Trang này đã bị chặn',
-  'blockedPage.default':
-    'Bạn đã chọn tránh xa trang này. Hít một hơi thật sâu rồi quay lại với điều quan trọng.',
+  'blockedPage.default': 'Are you sure?',
   'blockedPage.open': 'Mở ArYS',
   'blockedPage.locked': 'Nuclear đang bật – mở khóa sau {time}.',
 };

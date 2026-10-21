@@ -149,8 +149,9 @@ describe('saveSettings with Nuclear', () => {
     await saveSettings({
       nuclear: { enabled: true, startsAt: Date.now(), unlockAt: Date.now() + H },
     });
-    await saveSettings({ blockMessage: 'Back to work', blockAccent: 'rose' });
-    expect((await loadSettings()).blockMessage).toBe('Back to work');
+    await saveSettings({ blockMessage: 'Back to work', showTitle: false });
+    const s = await loadSettings();
+    expect([s.blockMessage, s.showTitle]).toEqual(['Back to work', false]);
   });
 });
 

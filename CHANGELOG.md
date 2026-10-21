@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-21
+
+### Changed
+
+- Slogan is now “Are you sure?”.
+- Export writes a plain text file, one entry per line. Import still reads the 0.3.0 JSON export.
+- Block page: only the title and the message can be customised, and each can be turned off (both off shows just the logo). The link back to ArYS moved to a corner.
+- Sidebar icons are drawn as SVG so labels line up; radio buttons and checkboxes line up with their labels.
+
+### Removed
+
+- Accent colour and image for the block page.
+- Theme selector in Settings (the theme button in the sidebar stays).
+
 ## [0.3.0] - 2026-10-20
 
 First public version.

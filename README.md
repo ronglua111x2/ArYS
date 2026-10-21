@@ -4,7 +4,7 @@
 
 <h1 align="center">ArYS</h1>
 
-<p align="center"><em>Stay on what matters.</em></p>
+<p align="center"><em>Are you sure?</em></p>
 
 <p align="center">
   A lightweight website blocker for Microsoft Edge, with a Nuclear lock.<br />
@@ -24,8 +24,8 @@
 - **Nuclear option** – lock removing entries for as long as you choose, from minutes to forever, starting now or at a set time. Once started it cannot be cancelled, so a weak moment can't undo your decision.
 - **Self-healing list** – your list is kept in three places in your browser and repairs itself if one copy is lost.
 - **Blocks in-page navigation too** – e.g. searching inside a single-page app, not only full page loads.
-- **Custom block page** – your own title, message, accent colour and image, or a page of your choice.
-- **Import / export** – keep a backup of your list as a file.
+- **Custom block page** – your own title and message (or just the logo), or a page of your choice.
+- **Import / export** – your list as a plain text file, one entry per line.
 - **English and Vietnamese**, light and dark theme.
 
 ## Privacy

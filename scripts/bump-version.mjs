@@ -1,10 +1,11 @@
 // Usage: npm run bump -- patch|minor|major|<x.y.z>
-// Updates extension/manifest.json and package.json together (they must always match).
+// Updates extension/manifest.json, package.json and package-lock.json together (they must match).
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const manifestPath = fileURLToPath(new URL('../extension/manifest.json', import.meta.url));
 const pkgPath = fileURLToPath(new URL('../package.json', import.meta.url));
+const lockPath = fileURLToPath(new URL('../package-lock.json', import.meta.url));
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
 
@@ -32,6 +33,10 @@ manifest.version = next;
 pkg.version = next;
 writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
+lock.version = next;
+if (lock.packages?.['']) lock.packages[''].version = next;
+writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n');
 console.log(
   `Version -> ${next}\nNext:\n  git commit -am "chore: release v${next}"\n  git tag v${next}`,
 );

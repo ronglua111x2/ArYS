@@ -11,19 +11,6 @@ const SYNC_NUCLEAR = 'arys:nuclear';
 export const TERMS_VERSION = 1;
 export const TITLE_MAX = 60;
 export const MESSAGE_MAX = 280;
-export const IMAGE_MAX_BYTES = 200 * 1024;
-
-/** Accent colours offered for the block page (no free-form colour input). */
-export const ACCENTS = {
-  teal: '#0d9488',
-  blue: '#2563eb',
-  violet: '#7c3aed',
-  rose: '#e11d48',
-  orange: '#ea580c',
-  amber: '#d97706',
-  green: '#16a34a',
-  slate: '#475569',
-};
 
 /** Only absolute http(s) URLs are accepted as a custom block page. */
 export function safeRedirectUrl(value) {
@@ -33,13 +20,6 @@ export function safeRedirectUrl(value) {
   } catch {
     return null;
   }
-}
-
-/** Only small inline images (data URL) are accepted; never a remote address. */
-export function safeImage(value) {
-  const v = String(value ?? '');
-  if (!/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(v)) return '';
-  return v.length <= Math.ceil((IMAGE_MAX_BYTES * 4) / 3) + 40 ? v : '';
 }
 
 const text = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -54,8 +34,9 @@ export function normalizeSettings(raw) {
     blockPageUrl,
     blockTitle: text(r.blockTitle, TITLE_MAX),
     blockMessage: text(r.blockMessage, MESSAGE_MAX),
-    blockAccent: r.blockAccent in ACCENTS ? r.blockAccent : 'teal',
-    blockImage: safeImage(r.blockImage),
+    // Both off: the block page shows only the logo.
+    showTitle: r.showTitle !== false,
+    showMessage: r.showMessage !== false,
     nuclear: normalizeNuclear(r.nuclear),
   };
 }

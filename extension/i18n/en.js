@@ -2,7 +2,7 @@
 // Placeholders: {name}. Keep strings short; the UI is narrow.
 export default {
   'app.name': 'ArYS',
-  'app.slogan': 'Stay on what matters.',
+  'app.slogan': 'Are you sure?',
 
   'nav.blocked': 'Blocked sites',
   'nav.settings': 'Settings',
@@ -78,8 +78,7 @@ export default {
   'add.submitEmpty': 'Add',
 
   'import.errorEmpty': 'The file has no entries.',
-  'import.errorFormat':
-    'Unsupported file. Use an ArYS export (.json) or a text file with one entry per line.',
+  'import.errorFormat': 'Unsupported file. Use a text file with one entry per line.',
 
   'toast.added': 'Added {n}.',
   'toast.removed': 'Removed {n}.',
@@ -92,7 +91,6 @@ export default {
   'settings.title': 'Settings',
   'settings.language': 'Language',
   'settings.languageAuto': 'Same as browser',
-  'settings.theme': 'Theme',
   'settings.blockPage': 'When a site is blocked',
   'settings.blockPageDefault': 'Show the ArYS block page',
   'settings.blockPageUrl': 'Go to my own page',
@@ -105,11 +103,8 @@ export default {
   'settings.message': 'Message',
   'settings.messagePlaceholder': 'Leave empty for the default message',
   'settings.messageCounter': '{n}/{max}',
-  'settings.accent': 'Accent colour',
-  'settings.image': 'Image',
-  'settings.imageChoose': 'Choose image…',
-  'settings.imageRemove': 'Remove image',
-  'settings.imageTooBig': 'That image is too large even after resizing.',
+  'settings.showTitle': 'Show a title',
+  'settings.showMessage': 'Show a message',
   'settings.preview': 'Preview',
   'settings.resetBlockPage': 'Reset to default',
   'settings.nuclear': 'Nuclear option',
@@ -179,8 +174,7 @@ export default {
   'legal.privacy.p5': 'Questions? Open an issue on the project’s GitHub page.',
 
   'blockedPage.title': 'This site is blocked',
-  'blockedPage.default':
-    'You chose to stay away from this site. Take a breath and get back to what matters.',
+  'blockedPage.default': 'Are you sure?',
   'blockedPage.open': 'Open ArYS',
   'blockedPage.locked': 'Nuclear is on – unlocks in {time}.',
 };

@@ -1,5 +1,5 @@
 import { initPageI18n } from '../lib/i18n.js';
-import { ACCENTS, loadSettings } from '../lib/settings.js';
+import { loadSettings } from '../lib/settings.js';
 import { blockPageIsBlocked } from '../lib/warnings.js';
 import { getUserEntries } from '../lib/user-rules.js';
 import { formatCountdown, isActive, isLocked, isPermanent } from '../lib/nuclear.js';
@@ -19,13 +19,11 @@ if (settings.blockPage === 'url' && settings.blockPageUrl) {
 const { t } = await initPageI18n(settings.language);
 const title = settings.blockTitle || t('blockedPage.title');
 document.title = `ArYS – ${title}`;
-document.documentElement.style.setProperty('--block-accent', ACCENTS[settings.blockAccent]);
+// Title and message can each be turned off; with both off only the logo is shown.
 $('title').textContent = title;
+$('title').hidden = !settings.showTitle;
 $('message').textContent = settings.blockMessage || t('blockedPage.default');
-if (settings.blockImage) {
-  $('image').src = settings.blockImage;
-  $('image').classList.add('custom');
-}
+$('message').hidden = !settings.showMessage;
 
 // While Nuclear runs, say when it ends (ticks only while this tab is visible).
 const { nuclear } = settings;

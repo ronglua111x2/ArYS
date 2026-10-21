@@ -1,17 +1,13 @@
-:root {
-  --block-accent: var(--accent);
-}
-
 body {
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 2rem 1rem;
-  border-top: 6px solid var(--block-accent);
 }
 
 /* Hidden until settings are read: avoids a flash before a custom-page redirect. */
-body.pending main {
+body.pending main,
+body.pending .open {
   visibility: hidden;
 }
 
@@ -24,18 +20,8 @@ main {
   gap: 0.6rem;
 }
 
-#image {
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
-}
-
-#image.custom {
-  width: auto;
-  height: auto;
-  max-width: min(18rem, 80vw);
-  max-height: 14rem;
-  border-radius: 12px;
+main img {
+  border-radius: 20px;
 }
 
 h1 {
@@ -49,19 +35,22 @@ h1 {
   overflow-wrap: anywhere;
 }
 
-.slogan {
-  margin: 0 0 0.6rem;
-  font-style: italic;
-}
-
 .locked {
-  margin: 0 0 0.6rem;
+  margin: 0.4rem 0 0;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
 }
 
-.button.primary {
-  background: var(--block-accent);
-  border-color: var(--block-accent);
-  color: #fff;
+/* Quiet way back to the settings, out of the way of a logo-only page. */
+.open {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.open:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
 }
