@@ -116,6 +116,7 @@ let entries = [];
 let described = [];
 let userConditions = [];
 let kindFilter = 'all';
+let listShown = false; // never remembered: the list starts hidden every time the page opens
 let risk = new Map(); // entry -> warning keys
 
 // Pages ArYS relies on. Entries that block them are allowed; they only get a warning.
@@ -158,6 +159,16 @@ function renderList() {
       (!term || i.entry.toLowerCase().includes(term)),
   );
   $('count').textContent = t('blocked.count', { n: described.length });
+  const toggle = $('toggle-list');
+  toggle.hidden = !described.length;
+  toggle.textContent = t(listShown ? 'blocked.hide' : 'blocked.show');
+  toggle.setAttribute('aria-expanded', String(listShown));
+  const shown = listShown && described.length > 0;
+  $('entries').hidden = !shown;
+  const empty = $('empty');
+  empty.hidden = described.length > 0 && !(shown && !items.length);
+  empty.textContent = described.length ? t('blocked.noMatch') : t('blocked.empty');
+  if (!shown) return $('list').replaceChildren(); // hidden entries are not even in the page
   $('list').replaceChildren(
     ...items.map((i) => {
       const li = document.createElement('li');
@@ -190,9 +201,6 @@ function renderList() {
       return li;
     }),
   );
-  const empty = $('empty');
-  empty.hidden = items.length > 0;
-  empty.textContent = described.length ? t('blocked.noMatch') : t('blocked.empty');
 }
 
 async function removeEntries(list) {
@@ -206,6 +214,11 @@ async function removeEntries(list) {
 }
 
 $('search').addEventListener('input', renderList);
+$('toggle-list').addEventListener('click', () => {
+  listShown = !listShown;
+  renderList();
+  if (listShown) $('search').focus();
+});
 for (const btn of document.querySelectorAll('.filter')) {
   btn.addEventListener('click', () => {
     kindFilter = btn.dataset.kind;

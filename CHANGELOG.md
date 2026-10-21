@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [0.4.0] - 2026-10-21
 
+### Added
+
+- The blocked list starts hidden every time the settings page opens; “Show entries” reveals it.
+
 ### Changed
 
 - Slogan is now “Are you sure?”.

@@ -27,6 +27,8 @@ export default {
   'blocked.count': '{n} entries',
   'blocked.empty': 'Nothing blocked yet. Click “+ Add” to start.',
   'blocked.noMatch': 'No matches.',
+  'blocked.show': 'Show entries',
+  'blocked.hide': 'Hide entries',
   'blocked.remove': 'Remove',
   'blocked.removeLocked': 'Locked by Nuclear',
 

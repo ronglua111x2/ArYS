@@ -73,31 +73,44 @@
             </div>
           </header>
 
-          <div class="toolbar">
-            <input
-              id="search"
-              type="search"
-              autocomplete="off"
-              data-i18n-placeholder="blocked.search"
-            />
-            <div class="filters" role="group">
-              <button type="button" class="filter active" data-kind="all" data-i18n="filter.all">
-                All
-              </button>
-              <button type="button" class="filter" data-kind="site" data-i18n="filter.site">
-                Sites
-              </button>
-              <button type="button" class="filter" data-kind="pattern" data-i18n="filter.pattern">
-                Patterns
-              </button>
-              <button type="button" class="filter" data-kind="system" data-i18n="filter.system">
-                Browser pages
-              </button>
-            </div>
+          <!-- The entries stay hidden until asked for, every time the page opens. -->
+          <div class="list-head">
+            <span id="count" class="muted small"></span>
+            <button
+              type="button"
+              id="toggle-list"
+              class="ghost"
+              aria-expanded="false"
+              aria-controls="entries"
+              hidden
+            ></button>
           </div>
 
-          <p id="count" class="muted small"></p>
-          <ul id="list" class="list card"></ul>
+          <div id="entries" hidden>
+            <div class="toolbar">
+              <input
+                id="search"
+                type="search"
+                autocomplete="off"
+                data-i18n-placeholder="blocked.search"
+              />
+              <div class="filters" role="group">
+                <button type="button" class="filter active" data-kind="all" data-i18n="filter.all">
+                  All
+                </button>
+                <button type="button" class="filter" data-kind="site" data-i18n="filter.site">
+                  Sites
+                </button>
+                <button type="button" class="filter" data-kind="pattern" data-i18n="filter.pattern">
+                  Patterns
+                </button>
+                <button type="button" class="filter" data-kind="system" data-i18n="filter.system">
+                  Browser pages
+                </button>
+              </div>
+            </div>
+            <ul id="list" class="list card"></ul>
+          </div>
           <p id="empty" class="empty muted" hidden></p>
           <input
             id="import-file"

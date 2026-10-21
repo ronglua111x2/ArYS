@@ -26,6 +26,8 @@ export default {
   'blocked.count': '{n} mục',
   'blocked.empty': 'Chưa chặn gì. Bấm “+ Thêm” để bắt đầu.',
   'blocked.noMatch': 'Không có kết quả.',
+  'blocked.show': 'Hiện danh sách',
+  'blocked.hide': 'Ẩn danh sách',
   'blocked.remove': 'Xóa',
   'blocked.removeLocked': 'Đang khóa bởi Nuclear',
 
