@@ -413,13 +413,6 @@ main {
   color: var(--accent-strong);
 }
 
-.placeholder {
-  padding: 0.6rem 0.9rem;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  margin: 0.6rem 0 !important;
-}
-
 .links {
   display: flex;
   flex-wrap: wrap;

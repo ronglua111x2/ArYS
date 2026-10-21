@@ -139,7 +139,6 @@ export default {
   'about.license': 'License (MIT)',
   'about.privacy': 'Privacy policy',
   'about.terms': 'Terms of use',
-  'about.placeholder': 'Branding placeholder – logo, artwork and credits will go here.',
 
   'welcome.title': 'Welcome to ArYS',
   'welcome.lead': 'A calm, lightweight blocker for the sites that steal your focus.',

@@ -138,7 +138,6 @@ export default {
   'about.license': 'Giấy phép (MIT)',
   'about.privacy': 'Chính sách quyền riêng tư',
   'about.terms': 'Điều khoản sử dụng',
-  'about.placeholder': 'Chỗ dành cho thương hiệu – logo, hình ảnh và ghi công sẽ đặt ở đây.',
 
   'welcome.title': 'Chào mừng đến với ArYS',
   'welcome.lead': 'Trình chặn nhẹ nhàng cho những trang lấy mất sự tập trung của bạn.',
