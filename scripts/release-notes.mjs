@@ -29,7 +29,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 ### Install
 
-- **Microsoft Edge Add-ons:** coming soon.
+- **Microsoft Edge Add-ons:** [get ArYS](https://microsoftedge.microsoft.com/addons/detail/arys/fmkghfcckgdcgbepdghneoeealmemmhg) – updates install automatically (store updates can lag behind GitHub while Microsoft reviews them).
 - **Manually:** download \`arys-${version}.zip\` below and unzip it. Open \`edge://extensions\`, turn on _Developer mode_, choose **Load unpacked** and select the unzipped folder.
 
 To update a manual install, replace the files in the same folder and click **Reload** on \`edge://extensions\`: your list, settings and Nuclear lock stay.

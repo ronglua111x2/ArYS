@@ -13,6 +13,7 @@
 
 <p align="center">
   <a href="https://github.com/ronglua111x2/ArYS/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ronglua111x2/ArYS/actions/workflows/ci.yml/badge.svg?branch=publish" /></a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/arys/fmkghfcckgdcgbepdghneoeealmemmhg"><img alt="Microsoft Edge Add-ons" src="https://img.shields.io/badge/Edge%20Add--ons-get%20ArYS-0078D7" /></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
 </p>
 
@@ -39,7 +40,7 @@ ArYS collects nothing and makes no network requests. Your list and settings stay
 
 ## Install
 
-- **Microsoft Edge Add-ons:** coming soon.
+- **Microsoft Edge Add-ons:** [get ArYS](https://microsoftedge.microsoft.com/addons/detail/arys/fmkghfcckgdcgbepdghneoeealmemmhg).
 - **From source:** clone the repo, open `edge://extensions`, turn on _Developer mode_, choose **Load unpacked** and select the `extension/` folder. No build step; `npm install` is only needed for development.
 
 ## Development
