@@ -17,6 +17,8 @@ const BLOCK_PAGE = chrome.runtime.getURL('blocked/blocked.html');
 const SELF_BLOCK_PAGE = normalizeInternal(BLOCK_PAGE);
 const WEB = { url: [{ schemes: ['http', 'https'] }] };
 const BROWSER = { url: [{ schemes: ['edge', 'chrome', 'extension', 'chrome-extension'] }] };
+// One listener per event: adding the same function twice with another filter is silently ignored.
+const ANY = { url: [...WEB.url, ...BROWSER.url] };
 
 // Built once per worker lifetime, rebuilt when the list changes.
 let matcher = null;
@@ -32,12 +34,12 @@ function check(details) {
   });
 }
 
-// 1. In-page address changes on web pages (real page loads are blocked by DNR).
-chrome.webNavigation.onHistoryStateUpdated.addListener(check, WEB);
-chrome.webNavigation.onReferenceFragmentUpdated.addListener(check, WEB);
-// 2. Browser pages: DNR never sees them.
+// 1. In-page address changes, on web pages (real page loads are blocked by DNR) and inside browser
+//    pages such as edge://settings, which switch sections without reloading.
+chrome.webNavigation.onHistoryStateUpdated.addListener(check, ANY);
+chrome.webNavigation.onReferenceFragmentUpdated.addListener(check, ANY);
+// 2. Browser pages loading: DNR never sees them.
 chrome.webNavigation.onCommitted.addListener(check, BROWSER);
-chrome.webNavigation.onHistoryStateUpdated.addListener(check, BROWSER);
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.userEntries) matcher = null;

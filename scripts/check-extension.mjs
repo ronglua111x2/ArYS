@@ -101,8 +101,15 @@ if (existsSync(bgPath)) {
   for (const [re, label] of BG_FORBIDDEN) {
     if (re.test(bg)) fail(`background.js: forbidden ${label}.`);
   }
+  const registered = new Set();
   for (const m of bg.matchAll(/webNavigation\.(\w+)\.addListener\(([^)]*)\)/g)) {
     if (!/,\s*\w+/.test(m[2])) fail(`background.js: ${m[1]} listener needs a URL filter.`);
+    // The browser ignores a second addListener of the same function: its filter would never apply.
+    const key = `${m[1]}:${m[2].split(',')[0].trim()}`;
+    if (registered.has(key)) {
+      fail(`background.js: ${m[1]} gets the same listener twice; merge the URL filters instead.`);
+    }
+    registered.add(key);
   }
 }
 
