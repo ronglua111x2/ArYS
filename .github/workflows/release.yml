@@ -23,7 +23,10 @@ jobs:
           VERSION=$(node -p "require('./extension/manifest.json').version")
           test "v${VERSION}" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} != v${VERSION}"; exit 1; }
       - run: npm run pack
+      - name: Release notes from CHANGELOG.md
+        run: node scripts/release-notes.mjs "${GITHUB_REF_NAME#v}" > RELEASE_NOTES.md
       - uses: softprops/action-gh-release@v3
         with:
+          name: ArYS ${{ github.ref_name }}
+          body_path: RELEASE_NOTES.md
           files: dist/*.zip
-          generate_release_notes: true
