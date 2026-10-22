@@ -1,6 +1,7 @@
 // Usage: npm run bump -- patch|minor|major|<x.y.z>
 // Updates extension/manifest.json, package.json and package-lock.json together (they must match).
 import { readFileSync, writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const manifestPath = fileURLToPath(new URL('../extension/manifest.json', import.meta.url));
@@ -37,6 +38,8 @@ const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
 lock.version = next;
 if (lock.packages?.['']) lock.packages[''].version = next;
 writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n');
+// JSON.stringify spreads short arrays over many lines; let Prettier restore the house style.
+execSync('npx prettier --write extension/manifest.json package.json', { stdio: 'ignore' });
 console.log(
   `Version -> ${next}\nNext:\n  git commit -am "chore: release v${next}"\n  git tag v${next}`,
 );
